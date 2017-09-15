@@ -1,0 +1,485 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.73 [en] (X11; I; Linux 2.2.14 i686) [Netscape]">
+   <title>fxp - The Program fxcopy</title>
+</head>
+<body bgcolor="#FFFFFF">
+
+<h1>
+<a href="index.html"><img SRC="fxp-shadow.jpg" ALT="fxp" BORDER=0  align=CENTER></a>
+The Program <i>fxcopy</i></h1>
+<img SRC="shadow.jpg" ALT="----------------" >
+<table CELLSPACING=0 CELLPADDING=0 >
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#DESC">Description</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#EXA">Options by Example</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#OPT">Summary of Options</a></td>
+</tr>
+</table>
+
+<p><img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+<a NAME="DESC"></a>Description</h2>
+<i>fxcopy</i> is a validating XML processor. It reads an XML document and
+produces a copy of it. This copy can be in a different encoding, and can
+be normalized in several ways by, e.g., expanding entity references.
+<p>The typical invocation of <i>fxcopy</i> is
+<blockquote>
+<pre>fxcopy [option ...] [infile]</pre>
+</blockquote>
+If <tt>infile</tt> is given, <i>fxcopy</i> reads its input document from
+that file, otherwise <i>fxcopy</i> reads from standard input.
+<p><img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+<a NAME="EXA"></a>Options by Example</h2>
+In addition to the options of <i><a href="fxp.html#EXA">fxp</a></i>, <i>fxcopy</i>
+accepts arguments in the following two areas:&nbsp;<!--
+    <I>fxcopy</I> understands all options documented for 
+    <A HREF="fxp.html#EXA"><I>fxp</I></A>; the additional options 
+    are described now.
+    -->
+<table CELLSPACING=0 CELLPADDING=0 >
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#EXA-OUT">Controlling Output</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#EXA-REF">Expansion of References</a> in the <a href="#EXP-INST">Document
+Instance</a> and in the <a href="#EXP-SUB">Declaration Subset</a></td>
+</tr>
+</table>
+
+<h4>
+<a NAME="EXA-OUT"></a>Controlling Output</h4>
+By default, <i>fxcopy</i> writes to standard output, in the same encoding
+as the input document. This can be changed by the following options:
+<ul>
+<li>
+The output can be redirected to a file named <tt>outfile</tt> via the option
+<tt>--output=outfile</tt> or, for short, <tt>-o outfile</tt>.</li>
+
+<li>
+If an output encoding different from the input encoding is desired, use
+the <tt>--output-encoding=enc</tt> option, where <tt>enc</tt> is one of
+<i>fxcopy</i>'s <a href="features.html#ENC">supported</a> encodings.</li>
+</ul>
+For instance,
+<blockquote>
+<pre>fxcopy -o output.utf8 --output-encoding=UTF-8 input.ascii</pre>
+</blockquote>
+recodes the file <tt>input.ascii</tt> to UTF-8 and writes it to the file
+<tt>input.utf8</tt>.
+<h4>
+<a NAME="EXA-REF"></a>Expansion of References</h4>
+By default <i>fxcopy</i> produces a document that is for the most parts
+identical to the input, i.e.,
+<ul>
+<li>
+all character references and general entity references in the document
+instance are preserved as far as the output encoding admits;</li>
+
+<li>
+attribute values are reproduced literally, i.e., without being normalized
+and without replacing entity references;</li>
+
+<li>
+the internal subset of the DTD is reproduced in an equivalent form; it
+is not reproduced literally in that white space is not preserved but normalized
+to a canonical form;</li>
+
+<li>
+entity values in entity declarations are reproduced literally, i.e., without
+replacing entities references;</li>
+
+<li>
+the external subset is not copied to the output, but the external identifier
+of the document type declaration is preserved.</li>
+</ul>
+This behavior can be affected by options.
+<h5>
+<a NAME="EXP-INST"></a>Reference Expansion in the Document Instance</h5>
+Expansion of references in content can be controlled by the <tt>--expand-ref-content</tt>
+option. Its takes as argument a list of keywords each specifying a class
+of references to expand, where
+<blockquote>&nbsp;
+<table CELLSPACING=0 CELLPADDING=0 >
+<tr VALIGN=TOP>
+<td><tt>char</tt></td>
+
+<td>means that a character reference shall be replaced by the described
+character unless that character cannot be represented directly in the output
+encoding.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>int</tt></td>
+
+<td>means that references to internal general entities shall be substituted
+with their replacement text, unless the entity is undeclared (which may
+only happen in non-validating mode).&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>ext</tt></td>
+
+<td>means references to external parsed entities shall be substituted by
+the content of the file they point to, unless the entity is undeclared
+(which may only happen in non-validating mode).&nbsp;</td>
+</tr>
+</table>
+</blockquote>
+Alternatively, we can use <tt>--expand-ref-content</tt> for specifying
+all of the above.
+<p>The second place within the document instance where references can occur
+is attribute values. Furthermore, attribute values are normalized according
+to their attribute type after replacement of references. By default, <i>fxcopy</i>
+reproduces attribute values literally. Given the <tt>--expand-att-vals</tt>
+option, it outputs the normalized value instead.
+<p>As an example for expansion in the document instance assume the following
+declarations in the DTD:
+<blockquote>
+<pre>&lt;!ENTITY q "quote sign">
+&lt;!ENTITY int "internal entity">
+&lt;!ENTITY ext SYSTEM "ext.ent">
+&lt;!ATTLIST a x NMTOKENS #IMPLIED
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y CDATA&nbsp;&nbsp;&nbsp; #IMPLIED></pre>
+</blockquote>
+and the content of the file <tt>ext.ent</tt> is the string "<tt>external
+entity</tt>". Let us consider the following document fragment:
+<blockquote>
+<pre>&lt;a x=" a&nbsp;&nbsp; b " y="two &amp;q;s: &amp;#x27; and &amp;#x22;">&nbsp;&nbsp;&nbsp;&nbsp;
+here is a character reference: &amp;#64;
+here is an &amp;int;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+here is an &amp;ext;
+&lt;/a></pre>
+</blockquote>
+Running <tt>fxcopy --expand-refs-content=char,int</tt> produces this:
+<blockquote>
+<pre>&lt;a x=" a&nbsp;&nbsp; b " y="two &amp;q;s: &amp;#x27; and &amp;#x22;">&nbsp;&nbsp;&nbsp;&nbsp;
+here is a character reference: @
+here is an internal entity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+here is an &amp;ext;
+&lt;/a></pre>
+</blockquote>
+whereas <tt>fxcopy --expand-refs-content=ext --expand-att-vals</tt> yields
+<blockquote>
+<pre>&lt;a x="a b" y="two quote signs: ' and &amp;#x22;">
+here is a character reference: &amp;#64;
+here is an &amp;int;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+here is an external entity
+&lt;/a></pre>
+</blockquote>
+Note that the <tt>&amp;#x22;</tt> in the attribute value is not replaced
+by the <tt>"</tt> sign because then it would be recognized as the end of
+the attribute value literal.
+<h5>
+<a NAME="EXP-SUB"></a>Reference Expansion in the Declaration Subset</h5>
+Normally <i>fxcopy</i> reproduces only the internal subset of the document
+type, preserving all references to parameter entities. This behavior can
+be changed with the <tt>--expand-ents-subset</tt> option. Its argument
+indicates which references shall be substitutes by their replacement text:
+<blockquote>&nbsp;
+<table CELLSPACING=0 CELLPADDING=0 >
+<tr VALIGN=TOP>
+<td><tt>int</tt></td>
+
+<td>Expand all references to internal parameter entities.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>ext</tt></td>
+
+<td>Replace all references to external parameter entities with the content
+of file they point to. Note that this option implies <tt><a href="#EXP-ENT">--expand-ent-vals</a></tt>
+in order to ensure well-formedness.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>yes</tt></td>
+
+<td>Expand references to internal and external parameter entities. <tt>--expand-ents-subset</tt>
+is equivalent <tt>--expand-ents-subset=yes</tt></td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>no</tt></td>
+
+<td>Expand no parameter entity references at all.&nbsp;</td>
+</tr>
+</table>
+</blockquote>
+This applies to references occurring where a declaration could occur. It
+does not affect references within declarations which are expanded regardless
+of options.
+<p>The external subset can be viewed as a special reference. The <tt>--expand-ext-subset</tt>
+option makes <i>fxcopy</i> drop the external identifier from the document
+type declaration, and copy the content of the file it denotes to the end
+of the internal subset. As <tt>--expand-ents-subset=ext</tt>, this option
+implies <tt><a href="#EXP-ENT">--expand-ent-vals</a></tt>.
+<p><a NAME="EXP-ENT"></a>Usually, entity values in entity declarations
+are reproduced literally, i.e., without replacement of references. However,
+if a declaration is copied from an external entity to the internal subset,
+parameter entity references become invalid in the entity value. Therefore,
+given the <tt>--expand-ent-vals</tt> option, <i>fxcopy</i> substitutes
+the derived entity replacement text for the entity value. This does not
+contain parameter entity references (only if the %-sign was escaped with
+a character reference, but then it wasn't even recognized as a reference
+by the parser); it uses character references only for characters that can
+not be represented directly.
+<p>For instance, consider the document <tt>exa-6.xml</tt>:
+<blockquote>
+<pre>&lt;?xml version="1.0"?>
+&lt;!DOCTYPE exa SYSTEM "exa-6.ext" [
+&lt;!ENTITY % int "&lt;!ELEMENT exa ANY>">
+&lt;!ENTITY % ext SYSTEM "ext-6.decl">
+%int;
+%ext;
+]>
+&lt;exa/></pre>
+</blockquote>
+where the content of the file <tt>exa-6.ext</tt> is
+<blockquote>
+<pre>&lt;!ENTITY % vnum "1.0">
+&lt;!ENTITY % version "xml version %vnum;"></pre>
+</blockquote>
+and <tt>ext-6.decl</tt> contains
+<blockquote>
+<pre>&lt;!NOTATION text SYSTEM "/bin/cat"></pre>
+</blockquote>
+Running <tt>fxcopy --expand-refs-subset=int exa-6.xml</tt> produces:
+<blockquote>
+<pre>&lt;?xml version="1.0"?>
+&lt;!DOCTYPE exa SYSTEM "exa-6.ext" [
+&lt;!ENTITY % int "&lt;!ELEMENT exa ANY>">
+&lt;!ENTITY % ext SYSTEM "ext-6.decl">
+&lt;!ELEMENT exa ANY>
+%ext;
+]>
+&lt;exa/></pre>
+</blockquote>
+Note that only the internal reference <tt>%int;</tt> was expanded. On the
+other hand, if we run <tt>fxcopy --expand-refs-subset=ext exa-6.xml</tt>
+we get:
+<blockquote>
+<pre>&lt;?xml version="1.0"?>
+&lt;!DOCTYPE exa SYSTEM "exa-6.ext" [
+&lt;!ENTITY % int "&lt;!ELEMENT exa ANY>">
+&lt;!ENTITY % ext SYSTEM "ext-6.decl">
+%int;
+&lt;!NOTATION text SYSTEM "/bin/cat">
+]>
+&lt;exa/></pre>
+</blockquote>
+Finally, using <tt>fxcopy --expand-ext-subset exa-6.xml</tt> yields
+<blockquote>
+<pre>&lt;?xml version="1.0"?>
+&lt;!DOCTYPE exa [
+&lt;!ENTITY % int "&lt;!ELEMENT exa ANY>">
+&lt;!ENTITY % ext SYSTEM "ext-6.decl">
+%int;
+%ext;
+&lt;!ENTITY % vnum "1.0">
+&lt;!ENTITY % version "xml version 1.0">
+]>
+&lt;exa/></pre>
+</blockquote>
+Note that the entity value in the last entity declaration has been expanded,
+because the <tt>--expand-ent-vals</tt> option was implied by <tt>--expand-ext-subset</tt>.
+If we supersede this with <tt>--expand-ext-subset=no</tt>, we get
+<blockquote>
+<pre>&lt;!ENTITY % version "xml version %vnum;"></pre>
+</blockquote>
+but this is not well-formed:
+<blockquote>
+<pre>> fxcopy --expand-ext-subset --expand-ent-vals=no exa-6.xml | fxp
+[&lt;stdin>:8.33] Error: a parameter entity reference is not allowed in a&nbsp;
+&nbsp;&nbsp;&nbsp; declaration in the internal subset.</pre>
+</blockquote>
+<img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+<a NAME="OPT"></a>Summary of Command Line Options</h2>
+Each option can be one of:
+<ul>
+<li>
+A file name specifying the input document. Only one input document may
+be specified.</li>
+
+<li>
+A long option of the form <tt>--key[=arg]</tt></li>
+
+<li>
+A short option of the form <tt>-k</tt>, where <tt>k</tt> consists of single
+character. If <tt>k</tt> consists of more than one character, each character
+is assumed to be a short option itself (e.g., <tt>-vic</tt> equals <tt>-v
+-i -c</tt>).</li>
+
+<li>
+A short option with argument of the form <tt>-k arg</tt>, where <tt>k</tt>
+consists of a single character.</li>
+
+<li>
+A negative short option of the form <tt>-nk</tt>, where <tt>k</tt> consists
+of single character. If <tt>k</tt> consists of more than one character,
+each character is assumed to be a negative short option itself (e.g., <tt>-nvic</tt>
+equals <tt>-nv -ni -nc</tt>). If <tt>k</tt> is empty, then we have the
+(non-negative) short option <tt>-n</tt>.</li>
+
+<li>
+The string <tt>--</tt>. This option is ignored, except that all remaining
+options are interpreted as file names, whether they start with <tt>-</tt>
+or not.</li>
+</ul>
+<i>fxcopy</i> understands all options documented for <i><a href="fxp.html#OPT">fxp</a></i>;
+additionally, the following options are available:
+<dl>
+<dt>
+<tt>-o fname</tt></dt>
+
+<dt>
+<tt>--output=fname</tt></dt>
+
+<dd>
+Write all output, except for errors and warnings, to the file named <tt>fname</tt>.
+If <tt>fname</tt> is <tt>-</tt>, the standard output is used. Defaults
+is <tt>-</tt>.</dd>
+
+<dt>
+<tt>--output-encoding=enc</tt></dt>
+
+<dd>
+Use encoding <tt>enc</tt> for generating the output. <tt>enc</tt> must
+be a <a href="features.html#ENC">supported</a> encoding. Default is the
+encoding of the input document.</dd>
+
+<dt>
+<tt>--expand-refs-content[=key]</tt></dt>
+
+<dd>
+Controls whether entity references in content are expanded, i.e., included
+or preserved as references in the output. <tt>key</tt> is either a comma-separated
+list of</dd>
+
+<ul>
+<li>
+<tt>char</tt> for character references,</li>
+
+<li>
+<tt>ext</tt> for references to external parsed entities, and</li>
+
+<li>
+<tt>int</tt> for references to internal general entities;</li>
+</ul>
+or it is <tt>yes</tt> for all or <tt>no</tt> for none of the above. If
+no <tt>key</tt> is given, <tt>yes</tt> is assumed. Default is <tt>no</tt>.
+<dt>
+<tt>--expand-refs-subset[=key]</tt></dt>
+
+<dd>
+Controls whether parameter entity references in the internal or external
+subset are expanded, i.e., included or preserved as references in the output.
+<tt>key</tt> is one out of</dd>
+
+<ul>
+<li>
+<tt>yes</tt> for all references,</li>
+
+<li>
+<tt>int</tt> for references to internal entities,</li>
+
+<li>
+<tt>ext</tt> for references to external entities; implies <tt>--expand-ent-vals</tt>;
+or</li>
+
+<li>
+<tt>no</tt> for no references at all</li>
+</ul>
+to be expanded. If <tt>key</tt> is omitted, <tt>yes</tt> is assumed. Default
+is <tt>no</tt>.
+<dt>
+<tt>--expand-ext-subset[=(yes|no)]</tt></dt>
+
+<dd>
+Controls whether the external subset shall be expanded, i.e., appended
+to the internal subset of the output while dropping its external identifier
+from the document type declaration. <tt>yes</tt> implies <tt>--expand-ent-vals</tt>.
+If no argument is given, <tt>yes</tt> is assumed. Default is <tt>no</tt>.</dd>
+
+<dt>
+<tt>--expand-att-vals[=(yes|no)]</tt></dt>
+
+<dd>
+Controls whether attribute values are reproduced literally or in expanded
+form, i.e., with all references expanded and white space normalized according
+to the attribute type. If no argument is given, <tt>yes</tt> is assumed.
+Default is <tt>no</tt>.</dd>
+
+<dt>
+<tt>--expand-ent-vals[=(yes|no)]</tt></dt>
+
+<dd>
+Controls whether entity values are reproduced literally or in expanded
+form, i.e., with all references expanded. If no argument is given, <tt>yes</tt>
+is assumed. Default is <tt>no</tt>.</dd>
+
+<dt>
+<tt>--expand=key</tt></dt>
+
+<dd>
+Depending on <tt>key</tt>, equivalent to:</dd>
+
+<table>
+<tr VALIGN=TOP>
+<td><tt>yes</tt>:</td>
+
+<td><tt>--expand-refs-content --expand-refs-subset --expand-ext-subset
+--expand-att-vals --expand-ent-vals</tt></td>
+
+<td></td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>no</tt>:</td>
+
+<td><tt>--expand-refs-content=no --expand-refs-subset=no --expand-ext-subset=no
+--expand-att-vals=no --expand-ent-vals=no</tt></td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>int</tt>:</td>
+
+<td><tt>--expand-refs-content=char,int --expand-refs-subset=int --expand-ext-subset=no
+--expand-att-vals --expand-ent-vals=no</tt></td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>ext</tt>:</td>
+
+<td><tt>--expand-refs-content=ext --expand-refs-subset=yes --expand-ext-subset
+--expand-att-vals=no --expand-ent-vals</tt></td>
+</tr>
+</table>
+</dl>
+<img SRC="shadow.jpg" ALT="----------------" >
+<address>
+fxp's feedback address <a href="mailto:fxp@PSI.Uni-Trier.DE">fxp@PSI.Uni-Trier.DE</a></address>
+
+</body>
+</html>

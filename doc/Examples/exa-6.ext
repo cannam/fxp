@@ -1,0 +1,2 @@
+<!ENTITY % vnum "1.0">
+<!ENTITY % version "xml version %vnum;">

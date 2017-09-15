@@ -1,0 +1,28 @@
+
+(exa
+-\n
+pBSD//A Program for viewing text//EN
+s/bin/cat
+Ntext
+Anot NOTATION text
+Abold TOKEN no
+Aid TOKEN first-a
+s/usr/bin/nroff
+Nman
+s/usr/man/man1/fxp.1
+f<OSFILE>/usr/man/man1/fxp.1
+Efxp.manpage NDATA man
+Aent ENTITY fxp.manpage
+Aref CDATA www.fxp.org
+(a
+-\nThere is a comment  in this line.\nThis line has a character reference and \nthis one has a "quoted general entity reference".  \n\nthis is a cdata section!\n
+?see this pi?
+-\n
+)a
+-\n
+Abold TOKEN no
+Anot NOTATION man
+(a
+-\nEr wohnt in K\U+f6;ln, in der M\U+fc;llerstra\U+df;e 13.\n
+)a
+)exa

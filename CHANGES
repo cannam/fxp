@@ -1,0 +1,339 @@
+From 1.4.6 to 2.0
+---------------------------
+(25.06.2004)
+
+Added support for XML 1.1 (Entities.getChar, UniClasses.isNms/isName/isXml
+have now an 11 (for 1.1) counterpart which are to be called when the XML
+declaration declares version 1.1.
+
+Changed Makefile to better support Windows installation.
+
+(13.02.2004)
+Updated fxp to handle the new specification of the xml:space attribute
+
+From 1.4.5 to 1.4.6
+---------------------------
+(09.10.2003)
+Modified documentation to fit in the fxgrep gui framework
+
+From 1.4.4 to 1.4.5
+---------------------------
+(20.02.2002)
+Modified the Makefiles to avoid unnecessary recompilations
+2001-09-17
+  - added hasElement, hasAttribute, etc. functions in Dtd
+
+Changes from 1.4.3 to 1.4.4
+---------------------------
+2000-10-30
+  - fixed a bug : parser reported an error if more than one definition
+    was provided for the same ID attribute, instead of ignoring
+    delarations later than the first one
+
+Changes from 1.4.2 to 1.4.3
+---------------------------
+2000-08-29:
+  - modified the autodetection of character encodings as stated in the
+    XML 1.0 Specification Errata from 2000-08-10 under E 44; among
+    others, UTF-8 with BOM is now recognized.
+ 	
+Changes from 1.4.1 to 1.4.2:
+--------------------------
+2000-07-28:
+  - fixed a Solaris bug in the Makefile 
+
+Changes from 1.4 to 1.4.1:
+--------------------------
+2000-06-08:
+  - fixed a bug in surrogate composition
+  - fixed a bug: parser complained about undeclared entities in 
+    non-validating mode, even if the DTD has paramter references.
+  - fixed another bug: parser never complained about undeclared 
+    parameter entities that constitute a validity error.  
+  - slightly restructured ParseRefs; resulting in some minor
+    changes in other modules.
+  - modified sample applications to report fatal errors as fatal. 
+
+Changes from 1.3 to 1.4:
+------------------------
+2000-02-18:
+  - fixed a bug in UtilCompare.compareVector
+  - eliminated UnsafeOps structure. Unsafe operations yield only
+    insignificant speedup, but extremely impair reliability. 
+ 
+2000-02-10:
+  - parseElementContent reports only a single error for each piece
+    of character data in element content. Before this change, it did
+    report an error after each sequence of white space characters
+    followed by non-white space. Similarly for parseDocument.
+
+1999-10-22:
+  - Added the start position of the PI text to HookData.ProcInstInfo.
+
+1999-10-18:
+  - Fixed a small bug in UtilHash.hashTriple
+
+1999-08-27:
+  - Removed the this/next components from the Entities.State type.
+    It is sufficient to compare the entity's indices in the DTD.
+    Added a type EntId, indicating whether an entity is a parameter
+    or general entity, and holding its index. isOpen, pushIntern and
+    pushExtern now have an additional parameter isParam:bool. Changed 
+    all parser functions accordingly. 
+
+Changes from 1.2 to 1.3:
+------------------------
+1999-08-24:
+  - Removed options --table-size/width.
+  - added new encoding UCS2B/L, which is UTF16 without surrogate pairs.  
+  - unrolled the getBytes loop in getCharUtf8. UTF-8 does not recognize 
+    surrogates pairs any more (cf. Rfc 2279, lines 201-206). The same 
+    for UCS-4. 
+  - changed implementation getCharUtf16/getCharUcs4: they are not higher 
+    order any more. Efficiency increased.
+
+1999-08-13:
+  - Changed ParseDecl.parseGenEntDecl not to check for declaredness of
+    unparsed entities' notations.
+  - Added maxUsedGen to Dtd: returns the number of general entities defined.
+  - Added checkUnparsed to DtdDeclare. It checks whether all notations of
+    unparsed entities have been declared. Added a call to checkUnparsed
+    at the end of parseDtd.
+
+1999-08-12:
+  - Made DecodeUtf8.byte1switch a vector. 
+  - Changed type CharClasses.CharClass to a vector. Arrays are now only
+    used for initializing the char classes; for lookup, they must be 
+    finalized to a vector.
+
+1999-08-03:
+  - Restructered the Dtd[Elements|Attributes|Notations|Entities] modules.
+    There are now two modules: DtdDeclare for operations concerning 
+    declarations, and DtdAttributes for generating attribute values.
+  - Renamed AuxDtd to DtdManager.
+  - Renamed some functions from Entities to shorter names.  
+  - Changed ParseDocument.parseDoc not to set O_VALIDATE to false if there 
+    is no DTD. Instead those functions that would produce too many errors
+    without a DTD call hasDtd in order to find out whether there is one.
+  - Changed the error message for ERR_NO_DTD.
+
+1999-07-29:
+  - Fixed a bug in the ParseContent.parseElementContent: character 
+    references were passed to the application instead of reporting 
+    an error. 
+  - Removed ERR_DATA_IN_ELEM and ERR_CDATA_IN_ELEM; added ERR_ELEM_CONTENT
+    instead, which does the job for data, CDATA sections and charrefs.
+  - Added a boolean flag to HookData.DataInfo,indicating whether the 
+    data is whitespace in element content. This information was available
+    only implicitly by the content spec of the parent element.
+
+1999-07-26:
+  - Fixed a bug in the decoder and encoder, concerning surrogates: the
+    offset added/subtracted in combine/splitSurrogates was 0wx10000
+    instead of 0wx100000. 
+  - DecodeUtil.isSurrogate ignored the high surrogates: fixed that. 
+
+1999-07-22:
+  - Renamed DecodeBasic to DecodeFile. Changes getByte such that it
+    closes the file (and removes it if temporary) before raising EndOfFile.
+
+1999-07-20:
+  - Reimplemented the Uri structure to use strings for uris. (They may
+    only contain ASCII characters). Changed the result type of uriSuffix 
+    to string.
+  - Moved the URI encoding functions to a new structure UriEncode.
+    A character "%" is only encoded if not followed by two hex digits.
+    Removed URI decoding, since that is superfluous.
+  - Added parser option O_WARN_NON_ASCII_URI. Changed 
+    ParseLiterals.parseSystemLiteral to issue a warning if a non-ASCII
+    character occurs. Added a corresponding command line option 
+    --warn-uri.
+  - Removed types CharInterval and CharRange from structure UniChar. 
+    Added them to CharClasses, used only in Naming and NameClasses.
+  - Renamed type UniChar.CharVector to Vector for brevity. 
+  - Renamed structures NameRanges and Naming to UniRanges and UniClasses.
+
+1999-07-19:
+  - Renamed structure Chars to UniChar. Changed definitions such that 
+    UniChar provides a structure Chars : WORD such that type Char =
+    Chars.word;
+  - Moved type Byte to DecodeBasic such that DecodeBasic provides a 
+    structure Bytes : WORD such that type Byte = Chars.word;
+  - Changed other structures to use UniChar.Char and DecodeBasic.Bytes
+    instead of hardwired Word and Word8.
+
+1999-07-14:
+  - Changed the DTD structure. The DTD is not a bunch of global variables 
+    anymore; it is now a single data structure handed as argument to all
+    DTD functions. It must therefore be passed around through all DTD-
+    dependent parts of the parser and of all applications. 
+    + Removed O_INIT_DTD option. Instead, the parser expects an optional
+      DTD as argument. If that is NONE, a new DTD data structure is 
+      initialized, otherwise tghe provided one is used.
+    + Changed all applications to pass the DTD around. 
+  - Changed functions ParseMisc.skipS and ParseRefs.skipPS. Instead of
+    raising NotFound on error, they call the hookError function themselves.   
+
+Changes from 1.1 to 1.2:
+------------------------
+1999-06-07:
+  - Replaced the --error-minimize option by --few-errors[=(yes|no)].
+    The old option was buggy and could only turn on an feature that
+    was on by default.
+
+1999-06-04:
+  - Removed option --no-output/-n from fxesis and fxcopy.
+  - Modified the main functions of all applications: in case of 
+    option errors, they raise now raise exception Exit instead
+    of calling OS.Process.exit.
+  - Added support for remote URIs. 
+    + In structure Config, value retrieveCommand defines a command 
+      to be executed for URI retrieval. 
+    + Uri.retrieveUri calls this command for storing the entity
+      in a local file. It returns the name of the file and a flag
+      indicating whether a temporary file has actually been created
+      or the URI was local. 
+    + DecodeBasic.FILE has this boolean as additional parameter.
+      Function decClose removes the temp. file if the flag is true.
+
+1999-05-10:
+  - Added new type AppFinal to HookData signature. hookFinish now 
+    returns a value of type AppFinal. This is also the new type of 
+    ParseDocument.parseDocument's result.
+
+1999-05-03:
+  - Added support for XML syntax of XML Catalogs. 
+    + new function Uri.uriSuffix. Depending on the suffix of a URI,
+      catalogs are parsed in Socat syntax (.soc, .SOC) or XML syntax. 
+
+1999-04-23:
+  - Fixed bug: Dict.getByKey raised NoSuchEntry for unknown keys.
+    That made fxp fail with an uncaught exception if, e.g., an 
+    unknown output encoding was given.
+
+1999-04-15:
+  - Added functions Dict.clearDict and SymTable.clearSymTable.
+  - Removed references from the tables in Dtd. The Tables are now
+    initialized with clearDict/SymTable. 
+
+1999-04-14:
+  - Moved Hooks, HookData, Dtd, DtdOptions, Resolve and ParserOptions
+    to directory Params. Deleted directory Hooks.
+  - Added the start and end position to the arguments of most of the Hooks.
+    Made the appropriate changes in the parser modules and the apps. 
+  - The parser is now reentrant, i.e., multiple instances are possible
+    at the same time.
+  - Made Dfa a functor, expecting the Dfa-relevant options in a 
+    structure DfaOptions. Added a new functor for creating such a
+    structure.
+  - Made ParserOptions a functor in order to have multiple instances
+    of it. ParserOptions creates DfaOptions as a substructure. 
+
+1999-04-13:
+  - Made Dtd a functor, expecting a structure DtdOptions holding all options 
+    concerning the DTD. Removed these options from ParseOptions.
+  - Removed O_SILENT, O_ERROR_DEVICE and O_ERROR_LINEWIDTH from ParseOptions.
+    These options now belong to the application. 
+  - Fixed some bugs in the option parsers of applications.
+  - Fixed a bug in Dfa: exception DfaTooLarge was not visible through the
+    signature.
+  - Added an integer parameter to exceptions DfaToLarge and to 
+    WARN_DFA_TOO_LARGE. It is the maximal allowed number of states.
+  - ErrorMessage no longer depends on ParseOptions.
+
+Changes from 1.0 to 1.1:
+------------------------
+1999-03-29:
+  - Fixed ErrorMessage.errorMessage to complain about standalone 'yes' instead
+    of 'no'.
+  - Avoid multiple EndOfFile events for the same entity by adding a boolean 
+    flag to DecodeError/Bytes exceptions. 
+
+1999-03-25:
+  - Improved error reporting; the position handed to hookError/Warning is now 
+    - whenever possible - the first character of the concerned item. 
+    Exceptions are checks done at the end of the DTD or of the document.
+  - Improved handling of wrong end-tags. The strategy is:
+    + if the end-tag is for the current element, consume it and finish the
+      element;
+    + otherwise, if it is for an open element, assume the end-tag for the 
+      current element was forgotten, i.e., finish the current element but
+      retain the end-tag;
+    + otherwise, if the current element requires further content in order
+      to satisfy its content model, ignore the end-tag;
+    + otherwise consumne the end-tag and finish the current element.
+    In order to implement this, the following were necessary:
+    + an extra argument openElems to ParseContent.parseElement. It is a list
+      of the indices of the types of the enclosing elements;
+    + an extra component optEtag in the return vale of parseElement. It is an
+      option and holds information about an end-tag that was not consumed when
+      finishing the element;
+    + appropriate changes to the code of parse[Mixed|Element]Content.
+
+1999-03-24:
+  - fixed some bugs:
+    + comparison of fixed attribute values is now correct. 
+    + Naming.isUnicode: 0x10000..0xFFFFF was not unicode.
+    + ParseContent.parseMixedContent complained about character '>' even if 
+      it was not part of the sequence ']]>'.
+    + whitespace normalization in attribute values also affected characters 
+      that were escaped by a char reference.
+    + end-of-line normalization was done for the replacement text of internal 
+      entities, but may only be done for the literal entitiy values. 
+    + default values in attlist declarations were checked not only for lexical
+      validity but also for declaredness of notation/entity names. This is now
+      done when the default value is used.
+
+1999-03-22:
+  - Added support for the Socat syntax of XCatalog:
+    + new subdir Catalog with a main functor Catalog
+    + the parser functor now expects an additional structure argument Resolve
+      providing a function resolveExtId. That does not exist in BaseData any 
+      more. 
+
+1999-03-16:
+  - Extracted Unicode-specific code from the Parser: 
+    + made a new directory Unicode.
+    + moved Parser/Front/front.sml to Parser/entities.sml; renamed Front to 
+      Entities.
+    + moved Parser/Front to Unicode/Decode; renamed everything to Decode<...>,
+      frontEncoding to Encode.
+    + moved Parser/Back to Unicode/Encode; renamed everything to Encode<...>,
+      backEncoding to Encode; moved back.sml to Apps/Copy/copyEncode.sml
+    + moved Parser/Chars to Unicode/Chars.
+  - Changed the implementation of Decode and Encode: 
+    + UTF-7 is no longer supported.
+    + new structure Encoding providing types and functions for handling
+      encoding names.
+    + both Encode and Decode now raise exceptions instead of printing errors.
+    + made the appropriate changes to Entities and CopyEncode.
+
+1999-03-08:
+  - Moved fillArray for Front to FrontEncoding, renamed it to encGetArray.
+  - Hid implem. of type FrontEncoding.Encoding through the signature.
+
+1999-03-05:
+  - Changed Front.fillArray to use a function parameter instead of a reference.
+ 
+1999-03-02:
+  - Changed all parser functors:
+    + expect only a structure Params containing former Hooks, Front, Dtd, 
+      AuxParse and AuxRecover.
+    + No other parser structures are arguments to functors.
+  - Removed the functions from DtdTables from the Dtd signature.
+  - Renamed Dtd to AuxDtd and DtdTables to Dtd. 
+
+1999-03-01:
+  - Added function hookWhite to signature Hooks.
+  - Added calls to hookWhite in ParseDtd.parseSubset and ParseDocument.parseDoc.
+  - Changed CopyHooks and CopyOutput to account for this:
+    + removed third bool arg from CopyOutput.outComment/ProcInstr; they never 
+      print a newline now;
+    + removed printing of newlines from declaration hooks in CopyHooks;
+    + removed function CopyHooks.inContent; 
+    + added hookWhite to CopyHooks;
+  - Added hookWhite to NullHooks and EsisHooks;
+  - Added LOC_SUBSET to datatype Location in ErrorData and ErrorString.
+  - Fixed ErrorMessage.errorMessage to print "Could not open file..." instead of 
+    "Could open file..." for ERR_NO_SUCH_FILE. 
+

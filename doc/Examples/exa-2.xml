@@ -1,0 +1,15 @@
+<!DOCTYPE exa [
+	
+<!ELEMENT exa (a|b)*>
+<!ELEMENT a ((b|c)*,b,(b|c),(b|c),(b|c),(b|c),(b|c),(b|c),(b|c))>
+<!ELEMENT b ANY>
+<!ELEMENT c ANY>
+]>
+
+<exa>
+<!-- this comment has a -- in it. -->
+<a/>
+<b> 
+this element contains a "]]>" sequence
+</b>
+</exa>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!DOCTYPE exa SYSTEM "exa-6.ext" [
+<!ENTITY % int "<!ELEMENT exa ANY>">
+<!ENTITY % ext SYSTEM "ext-6.decl">
+%int;
+%ext;
+]>
+<exa/>

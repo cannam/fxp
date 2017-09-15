@@ -1,0 +1,24 @@
+<!ELEMENT XMLCatalog (Base|Delegate|Extend|Map|Remap)*>
+
+<!ELEMENT Base EMPTY>
+<!ATTLIST Base
+  HRef CDATA #REQUIRED>
+
+<!ELEMENT Delegate EMPTY>
+<!ATTLIST Delegate
+  PublicId CDATA #REQUIRED
+  HRef CDATA #REQUIRED>
+
+<!ELEMENT Extend EMPTY>
+<!ATTLIST Extend
+  HRef CDATA #REQUIRED>
+
+<!ELEMENT Map EMPTY>
+<!ATTLIST Map
+  PublicId CDATA #REQUIRED
+  HRef CDATA #REQUIRED>
+
+<!ELEMENT Remap EMPTY>
+<!ATTLIST Remap
+  SystemId CDATA #REQUIRED
+  HRef CDATA #REQUIRED>

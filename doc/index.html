@@ -1,0 +1,239 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.73 [en] (X11; I; Linux 2.2.14 i686) [Netscape]">
+   <title>fxp - a Functional XML Parser</title>
+</head>
+<body bgcolor="#FFFFFF">
+
+<h1>
+<img SRC="fxp-shadow.jpg" ALT="fxp" BORDER=0  align=CENTER> The Functional
+XML Parser</h1>
+<img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+Contents</h2>
+
+<table>
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#FXP">About <i>fxp</i></a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#VERSION"><i>fxp</i> Versions and Changes</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#GET">Where to get <i>fxp</i></a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#INSTALL">How to install <i>fxp</i></a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td>Example Applications: <i><a href="fxp.html">fxp</a></i>, <i><a href="fxcanon.html">fxcanon</a></i>,
+<i><a href="fxcopy.html">fxcopy</a></i>, <i><a href="fxesis.html">fxesis</a></i>,
+and <i><a href="fxviz.html">fxviz</a></i>.&nbsp;</td>
+</tr>
+</table>
+
+<p><img SRC="shadow.jpg" ALT="----------------" >
+<h3>
+<a NAME="FXP"></a>What is <i>fxp</i>?</h3>
+<i>fxp</i> is a validating <a href="http://www.w3.org/TR/REC-xml">XML</a>
+parser written completely in the functional programming language SML. fxp can
+validate both XML 1.0 and XML 1.1 documents. It has a <a
+href="#API">programming interface</a> allowing for production of XML
+applications based on <i>fxp</i>. It comes with four example applications:
+<table> <tr> <td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><i><a href="fxp.html">fxp</a></i>, the pure parser. It parses a document
+and finds well-formedness errors, validity errors and other problems;</td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><i><a href="fxcanon.html">fxcanon</a></i> produces an equivalent canonical
+XML document. <a href="http://www.jclark.com/xml/canonxml.html">Canonical
+XML</a> was invented by <a href="http://www.jclark.com">James Clark</a>
+for testing XML parsers. It contains only the information a processor is
+required to pass to the application;&nbsp;</td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><i><a href="fxcopy.html">fxcopy</a></i> reproduces the document parsed
+by <i>fxp</i>. The copy can be generated in a different encoding than the
+input, and can be normalized in different ways concerning, e.g., expansion
+of entity references;&nbsp;</td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><i><a href="fxesis.html">fxesis</a></i> adds a backend to <i>fxp</i>,
+producing an output similar to <i><a href="http://www.jclark.com/sp/nsgmls.htm">nsgmls</a></i>'s
+ESIS (Element Structure Information Set) output;</td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><i><a href="fxviz.html">fxviz</a></i> is an XML tree visualizer. It
+produces a graph description suitable as input to Georg Sander's <i><a href="ftp://ftp.cs.uni-sb.de/pub/graphics/vcg/">vcg</a></i>.&nbsp;</td>
+</tr>
+</table>
+More <a href="features.html">features</a> of <i>fxp</i> are <a href="features.html">here</a>.
+<p><img SRC="shadow.jpg" ALT="----------------" >
+
+<h3><a NAME="VERSION"></a><i>fxp</i> Versions and Changes</h3> 
+
+<p>The current version of <i>fxp</i> is 2.0. Changes from the
+previous versions are described <a href="CHANGES">here</a>.</p>
+
+<p><img SRC="shadow.jpg" ALT="----------------" >
+
+<h3>
+<a NAME="GET"></a>Downloading <i>fxp</i></h3>
+The source code for <i>fxp</i> can be downloaded by <a href="fxp.tar.gz">http</a>. The Copyright note is <a href="COPYRIGHT">here</a>.
+<p><img SRC="shadow.jpg" ALT="----------------" >
+<h3>
+<a NAME="INSTALL"></a>Installation instructions</h3> In order to
+install <i>fxp</i>, you need an SML compiler. It has been tested with
+the stable versions 110.0.7 and 110.0.6 of <a
+href="http://cm.bell-labs.com/cm/cs/what/smlnj/">SML of New
+Jersey</a>. (If you need to use a working version of the SML compiler
+look <a href="working.html">here.</a>) The compiler must have the
+compilation manager (CM) built in, which is the default when
+installing SML-NJ. We successfully compiled <i>fxp</i> on Linux. For other unices we expect
+no problems. An installation using the Windows version of SML-NJ is
+documented <a href="windows.html">here</a>.
+
+<p>These are the steps for installing <i>fxp</i> under Unix:
+<ol>
+<li>
+<a href="#GET">Download</a> the latest version of <i>fxp</i>;</li>
+
+<li>
+Unpack the sources, and change to the <i>fxp</i> directory, e.g.:</li>
+
+<pre>&nbsp;&nbsp;&nbsp; gunzip -c fxp-2.0.tar.gz | tar xf -
+&nbsp;&nbsp;&nbsp; cd fxp-2.0</pre>
+
+<li>
+Read the <tt>COPYRIGHT</tt>;</li>
+
+<li>
+Edit the <tt>Makefile</tt> according to your needs. Probably you will only
+have to change the following:</li>
+
+<ul>
+<li>
+<tt>INSTALL_PROGS</tt> is the list of programs to be installed. <i>fxlib</i> is
+required if you want to develop applications with fxp. The <a href='../Fxgrep/'>fxgrep</a> XML query language and the <a href='../Fxt/'>fxt</a> XML transformation language also need <i>fxlib</i> being installed.</li>
+
+<li>
+<tt>FXP_BINDIR</tt> is where the executables are installed;</li>
+
+<li>
+<tt>FXP_LIBDIR</tt> is where other files needed by <i>fxp</i> - the heap
+images and the library -- are installed;</li>
+
+<li>
+<tt>SML_BINDIR</tt> is the directory where the SML executables are found.
+It must contain the <tt>.arch-n-opsys</tt> script from the SML-NJ distribution,
+so make sure that this is where SML-NJ is <i>physically</i> installed;</li>
+
+<li>
+<tt>SML_EXEC</tt> is the name of the SML executable. This is the program
+that is called for generating the heap image and at execution of <i>fxp</i>.
+If <tt>sml</tt> will be in your <tt>PATH</tt> at execution time, you don't
+need the full path here.</li>
+
+<li>
+<tt>SML_MAKEDEF</tt> is for defining the <tt>make</tt> command in SML.
+After version 110.0.3, SML-NJ changed the type of <tt>CM.make'</tt>. Therefore
+it is wrapped into the <tt>make</tt> defined by this variable. For working
+versions of SML-NJ, use the second variant of this definition.</li>
+</ul>
+
+<li>
+Edit the file <tt>src/config.sml</tt> according to your needs. Currently
+only a single value can be configured here:</li>
+
+<ul>
+<li>
+<tt>retrieveCommand</tt> is the command to be used by <i>fxp</i> for retrieving
+a remote URI from the internet and storing it in a temporary file on the
+local file system. It is a string value and should contain the strings
+<tt>%1</tt> and <tt>%2</tt>, where</li>
+
+<ul>
+<li>
+<tt>%1</tt> is replaced by the URI;</li>
+
+<li>
+<tt>%2</tt> is replaced by the local filename.</li>
+</ul>
+It is recommended that the command exits with failure in case the URI cannot
+be retrieved. If the command generates a HTML error message instead (like,
+e.g., <tt>"lynx -source %1 > %2"</tt>), this HTML file is considered to
+be XML and will probably cause a mess of parsing errors. If you don't need
+URI retrieval, use <tt>"exit 1"</tt> which always fails on Unix. Sensible
+values are, e.g:
+<ul>
+<li>
+<tt>"<a href="ftp://gnjilux.cc.fer.hr/pub/unix/util/wget/">wget</a> -qO
+%2 %1"</tt></li>
+
+<li>
+<tt>"<a href="ftp://sunsite.unc.edu/pub/Linux/apps/www/mirroring/got_it-0.34.tar.gz">got_it</a>
+-o %2 %1"</tt></li>
+
+<li>
+<tt>"<a href="ftp://sunsite.unc.edu/pub/Linux/apps/www/mirroring/urlget-3.12.tar.gz">urlget</a>
+-s -o %2 %1"</tt></li>
+</ul>
+</ul>
+
+<li>
+Compile <i>fxp</i> by typing <tt>make</tt>;</li>
+
+<li>
+Install <i>fxp</i> by typing <tt>make install</tt>.</li>
+
+<li>
+If you want to use <i>fxviz</i>, you should also install <i><a href="ftp://ftp.cs.uni-sb.de/pub/graphics/vcg/">vcg</a></i>.</li>
+</ol>
+<img SRC="shadow.jpg" ALT="----------------" >
+
+<h3><a NAME="API"></a><i>fxp</i>'s Programming Interface</h3>
+Here is a <a href="api.ps">document </a>describinng the programming interface
+<p><img SRC="shadow.jpg" ALT="----------------" >
+
+<h3><i>fxp</i>'s feedback address</h3> 
+Any feedback related to fxp is welcome to: <img src="Images/email.png"> <p><img
+SRC="shadow.jpg" ALT="----------------" >
+
+
+<h3>Credits:</h3> The author of fxp is <a
+href="mailto:neumann@psi.uni-trier.de"/>Andreas Neumann</a>. fxp is
+maintained and updated by <a
+href="../"/>Alexandru Berlea</a>.
+
+
+</body>
+</html>

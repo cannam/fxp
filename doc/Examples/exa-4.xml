@@ -1,0 +1,21 @@
+<?xml version="1.1"?>
+
+<!DOCTYPE exa [
+	
+<!ELEMENT exa (a|b)*>
+<!ELEMENT a EMPTY>
+<!ELEMENT b ANY>
+
+<!ATTLIST a xml:lang CDATA "i-">
+<!ATTLIST c x NMTOKEN "1">
+
+<!ENTITY amp "&#38;">
+<!ENTITY amp "&#38;#38;">
+
+<!NOTATION text SYSTEM "/bin/cat">
+<!NOTATION text SYSTEM "/usr/local/bin/less">
+]>
+
+<exa>
+<a xml:lang="yy"/>
+</exa>

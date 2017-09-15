@@ -1,0 +1,299 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Installing fxp with SML working versions</title>
+  </head>
+
+  <body>
+    <h1>Installing fxp with SML working versions</h1>
+
+    Kevin S. Millikin has documented the changes needed in fxp's sources
+    in order to use it with  the SML working version 110.43. 
+<ol>
+<li>
+Download <a href="fxp-1.4.6.tar.gz">fxp-1.4.6</a>;</li>
+
+<li>
+Unpack the sources, and change to the <i>fxp</i> directory:</li>
+
+<pre>&nbsp;&nbsp;&nbsp; gunzip -c fxp-1.4.6.tar.gz | tar xf -
+&nbsp;&nbsp;&nbsp; cd fxp-1.4.6</pre>
+
+<li>You need to do some modifications in the fxp's sources in order to
+account for the changes in the SML working version. 
+
+For fxp 1.4.6 put the following patch <a
+href="working.diff">working.diff</a> in the fxp-1.4.6
+directory and type:<br>
+    <pre>
+    patch -p1 < working.diff
+    </pre>
+
+Alternatively you can perform them by hand as it follows:
+<ol type="i">
+  <li>
+      Since the SML/NJ compilation manager (CM) is changed in the
+      working version, it is necessary to specifically note the
+      dependency on the SML Basis library (which is SML's standard
+      libarary).  Add the following line
+<pre>
+    $/basis.cm
+</pre>
+      to the end of all the necessary CM files.  Those files are
+<pre>
+src/fxlib.cm
+src/Apps/Canon/canon.cm
+src/Apps/Copy/copy.cm
+src/Apps/Esis/esis.cm
+src/Apps/Null/null.cm
+src/Apps/Viz/viz.cm
+</pre>
+  </li>
+  <li>
+      The signatures for Arrays and Vectors in the Basis library have changed,
+      as of version 110.43.  Functions in the <code>Vector</code> and
+      <code>Array</code> structure which previously operated over
+      <em>slices</em> now use the <code>VectorSlice</code> or
+      <code>ArraySlice</code> structures.  This necessitates a whole host of
+      changes.
+
+<ol type="a">
+  <li>
+      In file <code>src/Util/utilString.sml</code>, line 233, change
+<pre>
+            <font color="red">Vector.foldri (fn (_,x,yet) => sep::X2String x::yet) [post] (vec,1,NONE))</font>
+</pre>
+      to
+<pre>
+             <font color="blue">VectorSlice.foldri
+                 (fn (_,x,yet) => sep::X2String x::yet)
+                 [post]
+                 (VectorSlice.slice (vec,1,NONE)))</font>
+</pre>
+  </li>
+  <li>
+      In file <code>src/Unicode/Chars/uniChar.sml</code>, line 111, change
+<pre>
+                    <font color="red">val cs1 = Vector.foldri 
+                       (fn (_,c,cs) => c::cs) nil (vec,0,SOME (maxlen div 2))
+                    val cs2 = Vector.foldri 
+                       (fn (_,c,cs) => c::cs) nil (vec,len-3-maxlen div 2,NONE)</font>
+</pre>
+      to
+<pre>
+                    <font color="blue">val cs1 = VectorSlice.foldri
+                       (fn (_,c,cs) => c::cs)
+                       nil
+                       (VectorSlice.slice (vec,0,SOME (maxlen div 2)))
+                    val cs2 = VectorSlice.foldri 
+                       (fn (_,c,cs) => c::cs)
+                       nil
+                       (VectorSlice.slice (vec,len-3-maxlen div 2,NONE))</font>
+</pre>
+  </li>
+  <li>
+      In file <code>src/Unicode/Chars/charClasses.sml</code>, line 94, change
+<pre>
+      <font color="red">fun finalize arr = Array.extract(arr,0,NONE)</font>
+</pre>
+      to
+<pre>
+      <font color="blue">fun finalize arr = Array.vector arr</font>
+</pre>
+  </li>
+  <li>
+      In file <code>src\Unicode\Uri\uriEncode.sml</code>, line 76, change
+<pre>
+            <font color="red">nil (cv,0,NONE)</font>
+</pre>
+      to
+<pre>
+            <font color="blue">nil cv</font>
+</pre>
+      and on line 88, make the same change.
+  </li>
+  <li>
+      In file <code>src\Util\SymDict\dict.sml</code>, line 233, change
+<pre>
+            <font color="red">Array.appi addTo (oldTab,0,NONE)</font>
+</pre>
+      to
+<pre>
+            <font color="blue">Array.appi addTo oldTab</font>
+</pre>
+      and on line 319, change
+<pre>
+          <font color="red">Array.appi 
+          (fn (n,(key,value)) =>
+           print ("  "^Int.toString n^": "^Key.toString key^" = "^X2String value^"\n")) 
+          (!tab,0,SOME (!count))) </font>
+</pre>
+      to
+<pre>
+          <font color="blue">ArraySlice.appi 
+          (fn (n,(key,value)) =>
+           print ("  "^Int.toString n^": "^Key.toString key^" = "^X2String value^"\n")) 
+          (ArraySlice.slice(!tab,0,SOME (!count))))</font>
+</pre>
+  </li>
+  <li>
+      In file <code>src\Util\SymDict\symbolTable.sml</code>, line 222, change
+<pre>
+            <font color="red">val _ = Array.appi addToNew (!tab,0,NONE)</font>
+</pre>
+      to
+<pre>
+            <font color="blue">val _ = Array.appi addToNew (!tab)</font>
+</pre>
+      and on line 303, change
+<pre>
+         <font color="red">Array.extract(!tab,0,SOME(!count))</font>
+</pre>
+      to
+<pre>
+         <font color="blue">ArraySlice.vector(ArraySlice.slice(!tab,0,SOME(!count)))</font>
+</pre>
+      an on line 310, change
+<pre>
+          <font color="red">Array.appi 
+          (fn (n,key) =>
+           print ("  "^Int.toString n^": "^Key.toString key^"\n")) 
+          (!tab,0,SOME (!count))) </font>
+</pre>
+      to
+<pre>
+          <font color="blue">ArraySlice.appi 
+          (fn (n,key) =>
+           print ("  "^Int.toString n^": "^Key.toString key^"\n")) 
+          (ArraySlice.slice(!tab,0,SOME (!count))))</font>
+</pre>
+  </li>
+  <li>
+      In file <code>src\Parser\Dfa\dfaString.sml</code>, line 71, change
+<pre>
+                <font color="red">(tab,0,NONE))</font>
+</pre>
+      to
+<pre>
+                <font color="blue">tab)</font>
+</pre>
+      and on line 77, change
+<pre>
+            <font color="red">nil (tab,0,NONE))</font>
+</pre>
+      to
+<pre>
+            <font color="blue">nil tab)</font>
+</pre>
+  </li>
+  <li>
+      In file <code>src\Parser\Params\dtd.sml</code>, line 293, change
+<pre>
+            <font color="red">val _ = Vector.appi 
+               (fn (_,(name,lit,cs)) 
+                => (setGenEnt dtd (GenEnt2Index dtd name,(GE_INTERN(lit,cs),false)))) 
+               (predefined,1,NONE)</font>
+</pre>
+      to
+<pre>
+            <font color="blue">val _ = VectorSlice.appi 
+               (fn (_,(name,lit,cs)) 
+                => (setGenEnt dtd (GenEnt2Index dtd name,(GE_INTERN(lit,cs),false)))) 
+               (VectorSlice.slice (predefined,1,NONE))</font>
+</pre>
+  </li>
+  <li>
+      In file <code>src\Parser\Dtd\dtdAttributes.sml</code>, line 68, change
+<pre>
+         <font color="red">in Vector.tabulate(26,fn i => Array.extract (Array.sub(arr,i),0,NONE))</font>
+</pre>
+      to
+<pre>
+         <font color="blue">in Vector.tabulate(26,fn i => Array.vector (Array.sub(arr,i)))</font>
+</pre>
+  </li>
+  <li>
+      In file <code>src\Util\intSets.sml</code>, line 53, change
+<pre>
+         <font color="red">in Vector.extract (vec,0,SOME max)</font>
+</pre>
+      to
+<pre>
+         <font color="blue">in VectorSlice.vector(VectorSlice.slice (vec,0,SOME max))</font>
+</pre>
+      and line 52 from
+<pre>
+            <font color="red">(fn (i,w,max) => if w=0wx0 then i else max) 0 (vec,0,NONE)</font>
+</pre>
+      to
+<pre>
+            <font color="blue">(fn (i,w,max) => if w=0wx0 then i else max) 0 vec</font>
+</pre>
+      and line 91 from
+<pre>
+               <font color="red">then Vector.mapi (fn (i,x) => if i=idx then x||mask else x) (vec,0,NONE)</font>
+</pre>
+      to
+<pre>
+               <font color="blue">then Vector.mapi (fn (i,x) => if i=idx then x||mask else x) vec</font>
+</pre>
+      and line 104 from
+<pre>
+                               <font color="red">(fn (i,x) => if i=idx then x && mask else x) (vec,0,NONE)</font>
+</pre>
+      to
+<pre>
+                               <font color="blue">(fn (i,x) => if i=idx then x && mask else x) vec</font>
+</pre>
+  </li>
+  <li>
+      In file <code>src\Parser\Dfa\dfaUtil.sml</code>, change line 127 from
+<pre>
+            <font color="red">(lo,hi,Array.extract (tab,0,NONE),fin)</font>
+</pre>
+      to
+<pre>
+            <font color="blue">(lo,hi,Array.vector tab,fin)</font>
+</pre>
+  </li>
+  <li>
+      In file <code>src\Parser\Dfa\dfaPassTwo.sml</code>, change line 75 from
+<pre>
+         <font color="red">in Array.extract (table,0,NONE)</font>
+</pre>
+      to
+<pre>
+         <font color="blue">in Array.vector table</font>
+</pre>
+  </li>
+  <li>
+      In file <code>src\Parser\Parse\parseContent.sml</code>, line 590, change
+<pre>
+                  <font color="red">hookData(a,((!pos0,getPos q),Array.extract(dataBuffer,0,SOME i),false))</font>
+</pre>
+      to
+<pre>
+                  <font color="blue">hookData(a,((!pos0,getPos q),
+                              ArraySlice.vector(ArraySlice.slice(dataBuffer,0,SOME i)),
+                              false))</font>
+</pre>
+  </li>
+  <li>
+      In file <code>src\Apps\Copy\copyEncode.sml</code>, line 129, change
+<pre>
+            <font color="red">val f2 = Vector.foldli putOne f1 (cv,0,NONE)</font>
+</pre>
+      to
+<pre>
+            <font color="blue">val f2 = Vector.foldli putOne f1 cv</font>
+</pre>
+</li></ol>
+  </li>
+</ol>
+</li>
+<li>Follow the <a href="index.html#INSTALL">installation
+instructions</a> for fxp starting with step 3.  
+</li> 
+</ol> 
+<hr>
+</body> </html>

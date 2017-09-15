@@ -1,0 +1,8 @@
+Group is
+    canonOptions.sml
+    canonEncode.sml
+    canonOutput.sml
+    canonHooks.sml
+    canon.sml
+    ../../fxlib.cm
+    $/basis.cm

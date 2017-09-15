@@ -1,0 +1,387 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.73 [en] (X11; I; Linux 2.2.14 i686) [Netscape]">
+   <title>fxp - Features</title>
+<!-- DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN" -->
+</head>
+<body bgcolor="#FFFFFF">
+
+<h1>
+<a href="index.html"><img SRC="fxp-shadow.jpg" ALT="fxp" BORDER=0  align=CENTER></a>
+Features</h1>
+<img SRC="shadow.jpg" ALT="----------------" >
+<table CELLSPACING=0 CELLPADDING=0 >
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#UNI">Unicode Support</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#CAT">Catalog Support</a></td>
+</tr>
+</table>
+
+<p><img SRC="shadow.jpg" ALT="----------------" >
+<h1>
+<a NAME="UNI"></a>Unicode Support</h1>
+<i>fxp</i> has full support for Unicode and auto-detection of encoding
+of external XML entities. The&nbsp;<a NAME="ENC"></a>supported encodings
+are currently:
+<table WIDTH="90%" >
+<tr VALIGN=TOP>
+<th>Encoding&nbsp;</th>
+
+<th ALIGN=LEFT>Other recognized names&nbsp;</th>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>ASCII</tt></td>
+
+<td><tt>ANSI_X3.4-1968</tt>, <tt>ANSI_X3.4-1986</tt>, <tt>US-ASCII</tt>,
+<tt>US</tt>, <tt>ISO646-US</tt>, <tt>ISO-IR-6</tt>, <tt>ISO_646.IRV:1991</tt>,
+<tt>IBM367</tt> and <tt>CP367</tt></td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>EBCDIC</tt></td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>LATIN1</tt></td>
+
+<td><tt>ISO_8859-1:1987</tt>, <tt>ISO-8859-1</tt>, <tt>ISO_8859-1</tt>,
+<tt>ISO-IR-100</tt>, <tt>CP819</tt>, <tt>IBM819</tt>, <tt>L1</tt></td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>UCS-4</tt></td>
+
+<td><tt>ISO-10646-UCS-4</tt></td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>UCS-2</tt></td>
+
+<td><tt>ISO-10646-UCS-2</tt></td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>UTF-16</tt></td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>UTF-8</tt></td>
+</tr>
+</table>
+
+<p><img SRC="shadow.jpg" ALT="----------------" >
+<h1>
+<a NAME="CAT"></a>Catalog Support</h1>
+
+<table CELLSPACING=0 CELLPADDING=0 >
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#CAT-OVER">Catalogs</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#CAT-EXA">Options by Example</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#CAT-OPT">Summary of Options</a></td>
+</tr>
+</table>
+
+<p><img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+<a NAME="CAT-OVER"></a>Catalogs</h2>
+<i>fxp</i> supports the Socat syntax of <a href="http://www.ccil.org/~cowan/XML/XCatalog.html">XML
+Catalog</a>. Catalogs are used for generating system identifiers from public
+identifiers (mapping), or for substituting system identifiers by other
+system identifiers (remapping). Catalogs come in two syntaxes: the Socat
+syntax is a subset of a catalog syntax used for SGML; the XML syntax is
+an XML document instance.
+<h4>
+Syntax</h4>
+There are five kinds of entries in a catalog:
+<table WIDTH="90%" >
+<tr VALIGN=TOP>
+<th ALIGN=LEFT>Type&nbsp;</th>
+
+<th ALIGN=LEFT>Socat/XML syntax&nbsp;</th>
+
+<th ALIGN=LEFT>Meaning&nbsp;</th>
+</tr>
+
+<tr VALIGN=TOP>
+<td>base&nbsp;</td>
+
+<td><tt>BASE</tt> <i>uri</i>
+<br><tt>&lt;Base HRef="</tt><i>uri</i><tt>"></tt></td>
+
+<td>Specifies a URI to be used as a base for succeeding relative URIs.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td>extend&nbsp;</td>
+
+<td><tt>CATALOG</tt> <i>uri</i>
+<br><tt>&lt;Extend HRef="</tt><i>uri</i><tt>"></tt></td>
+
+<td>Indicates an alternative catalog to be searched if the actual catalog
+does not contain a matching entry.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td>delegate&nbsp;</td>
+
+<td><tt>DELEGATE</tt> <i>prefix uri</i>
+<br><tt>&lt;Delegate PublicId="</tt><i>prefix</i><tt>" HRef="</tt><i>uri</i><tt>"></tt></td>
+
+<td>Specifies an alternative catalog, but only for public identifiers beginning
+with <i>prefix</i>.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td>map&nbsp;</td>
+
+<td><tt>PUBLIC</tt> <i>pubid uri</i>
+<br><tt>&lt;Map PublicId="</tt><i>pubid</i><tt>" HRef="</tt><i>uri</i><tt>"></tt></td>
+
+<td>Maps a public identifier to a URI.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td>remap&nbsp;</td>
+
+<td><tt>SYSTEM</tt> <i>src dst</i>
+<br><tt>&lt;Remap SystemId="</tt><i>src</i><tt>" HRef="</tt><i>dst</i><tt>"></tt></td>
+
+<td>Indicates that URI <i>dst</i> shall be used in the place of the source
+URI <i>src</i>.&nbsp;</td>
+</tr>
+</table>
+
+<p>If the XML syntax is used, the catalog is parsed in non-validating mode
+and everything except for the start-tags of the above five elements is
+ignored. It is recommended, however, that the catalog be a valid XML document
+with a document type similar to <a href="Examples/xmlcat.dtd">this</a>.
+<p>Relative URIs are treated as relative to the catalog in which they appear,
+or if there was a preceding base entry, relative to the URI of that entry.
+The only exception is that the <i>src</i> URI in a remap entry must be
+mapped exactly, ignoring any specified base.
+<h4>
+Example in Socat Syntax</h4>
+If a catalog's file name ends in <tt>.SOC</tt> or <tt>.soc</tt>, <i>fxp</i>
+assumes it is in Socat syntax, e.g.:
+<blockquote>
+<pre>BASE&nbsp;&nbsp;&nbsp;&nbsp; "/pub/dtd/w3c/"
+PUBLIC&nbsp;&nbsp; "-//W3C//DTD Specification::19980910//EN" "spec.dtd"
+SYSTEM&nbsp;&nbsp; "spec.dtd" "xmlspec.dtd"
+DELEGATE "ISO" "/pub/dtd/iso/iso.soc"
+CATALOG&nbsp; "/pub/entities/ent.soc"
+PUBLIC&nbsp;&nbsp; "ISO 8879:1986//ENTITIES Added Latin 1//EN" "/pub/iso/lat1.ent"
+SYSTEM&nbsp;&nbsp; "isolat1.ent" "latin1.ent"</pre>
+</blockquote>
+
+<h4>
+Example in XML Syntax</h4>
+For XML syntax, the catalog must be a well-formed, but not necessarily
+valid XML document. I.e., if the catalog has more than one entry, there
+must be at least one root element containing all the entries. All textual
+data and elements other than the five catalog entries are ignored.
+<blockquote>
+<pre>&lt;Catalog>
+&nbsp; &lt;Base HRef="/pub/dtd/w3c/"/>
+&nbsp; &lt;Map&nbsp; PublicId="-//W3C//DTD Specification::19980910//EN" HRef="spec.dtd"/>
+&nbsp; &lt;Remap SystemId="spec.dtd" HRef="xmlspec.dtd"/>
+&nbsp; &lt;Delegate PublicId="ISO" HRef="/pub/dtd/iso/iso.soc"/>
+&nbsp; &lt;Extend HRef="/pub/entities/ent.soc"/>
+&nbsp; &lt;Map PublicId="ISO 8879:1986//ENTITIES Added Latin 1//EN" HRef="/pub/iso/lat1.ent"/>
+&nbsp; &lt;Remap SystemId="isolat1.ent" HRef="latin1.ent"/>
+&lt;/Catalog></pre>
+</blockquote>
+
+<h4>
+Search Order</h4>
+The search order is breadth-first, i.e., a matching map or remap entry
+is always preferred to a matching entry in an alternative catalog specified
+by a preceding delegate or extend entry. E.g., in the example above the
+public identifier <tt>"ISO 8879:1986//ENTITIES Added Latin 1//EN"</tt>
+is mapped to <tt>/pub/iso/lat1.ent</tt> even if the catalog <tt>/pub/entities/ent.soc</tt>
+contains a matching entry for it.
+<p><img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+<a NAME="CAT-EXA"></a>Catalog Options by Example</h2>
+
+<h4>
+Catalog Search Path</h4>
+A catalog to be used for resolving can be specified with the <tt>--catalog</tt>
+option. Repeating this option several times is equivalent to concatenating
+all specified catalogs into one. Note that, e.g, a matching entry in the
+second catalog overrides a match in a catalog specified in a delegate or
+extend entry in the first one: suppose that <tt>iso.soc</tt> contains the
+line
+<blockquote>
+<pre>DELEGATE "ISO 8879:1986//ENTITIES" "8879.soc"</pre>
+</blockquote>
+<tt>8879.soc</tt> contains
+<blockquote>
+<pre>PUBLIC&nbsp;&nbsp; "ISO 8879:1986//ENTITIES Added Latin 1//EN" "/pub/iso/lat1.ent"</pre>
+</blockquote>
+and <tt>ents.soc</tt> contains
+<blockquote>
+<pre>PUBLIC&nbsp;&nbsp; "ISO 8879:1986//ENTITIES Added Latin 1//EN" "isolat1.ent"</pre>
+</blockquote>
+Specifying <tt>--catalog=iso.soc --catalog=ents.soc</tt> makes <tt>"ISO
+8879:1986//ENTITIES Added Latin 1//EN"</tt> resolve to <tt>isolat1.ent</tt>,
+and not to <tt>/pub/iso/lat1.ent</tt>.
+<h4>
+Resolving Strategy</h4>
+A catalog may be used for several reasons: as a fall-back, i.e., for generating
+system identifiers if the information in the XML document itself is not
+sufficient; or as the default, overriding the system identifiers specified
+in the DTD. By default, <i>fxp</i> tries to resolve an external identifier
+as follows:
+<ol>
+<li>
+if a public identifier is present, then it is tried to be mapped to a system
+identifier using the catalog; if this fails or no public identifier was
+given, the declared system identifier is used;</li>
+
+<li>
+the system identifier obtained by step 1 is tried to be remapped by a matching
+catalog entry.</li>
+</ol>
+This can be affected by the <tt>--catalog-priority</tt> option. This option
+takes one of the following arguments:
+<table WIDTH="90%" >
+<tr VALIGN=TOP>
+<td><tt>map</tt></td>
+
+<td>the default behaviour; for succeeding relative URIs.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>remap</tt></td>
+
+<td>first try to remap the declared system identifier; only if that fails
+proceed with step 1.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>sys</tt></td>
+
+<td>if a system identifier is given, don't consider the catalog at all;
+if there is no system identifier, proceed to steps 1 and 2. Note that in
+well-formed documents an external identifier must always contain a system
+identifier. Therefore this applies only to external identifiers declared
+for notations.&nbsp;</td>
+</tr>
+</table>
+
+<p>E.g., suppose you have the following declarations in the DTD:
+<blockquote>
+<pre>&lt;ENTITY % isolat1 PUBLIC "ISO 8879:1986//ENTITIES Added Latin 1//EN" "isolat1.ent">
+&lt;NOTATION ps PUBLIC "PostScript Level 3"></pre>
+</blockquote>
+By default, the external identifier for <tt>isolat1</tt> is mapped to <tt>/pub/iso/lat1.ent</tt>.
+With <tt>--catalog-priority=remap</tt> remapping of the declared system
+identifier comes first and yields <tt>latin1.ent</tt> (which is modified
+to <tt>/pub/dtd/w3c/latin1.ent</tt> due to the base entry in the catalog's
+first line). Giving option <tt>--catalog-priority=sys</tt> totally disables
+the catalog for this external identifier because it has a system identifier.
+For notation <tt>ps</tt>, however, the catalog is still consulted because
+its declaration lacks a system identifier.
+<p>Since remapping should be used with caution in publicly available catalogs
+it can be disabled with <tt>--catalog-remap=no</tt>. E.g., resolving public
+identifier <tt>"-//W3C//DTD Specification::19980910//EN"</tt> first results
+in the URI <tt>spec.dtd</tt>. By default, this is remapped to <tt>xmlspec.dtd</tt>,
+but with <tt>--catalog-remap=no</tt> it is returned as is.
+<h4>
+Catalog syntax and encoding</h4>
+A catalog is used for resolving system identifiers in XML documents. A
+system identifier is a URI and may, according to RFC 2396, only contain
+ASCII characters. Due to an inaccuracy in the XML recommendation, however,
+arbitrary Unicode characters may occur in system identifiers. Since system
+identifiers in catalogs are matched literally, it is desirable to specify
+them identically both in the catalog and in the XML document. Therefore
+catalogs are Unicode documents and can be written in all encodings supported
+for XML documents. Though XML recommends encoding non-ASCII characters
+in system identifiers in UTF-8 and escaping the resulting bytes in the
+URI, matching of system identifiers in catalogs is performed on the Unicode
+representation. Therefore, system identifier <tt>"entit&eacute;"</tt> does
+not match <tt>"entit%C3%A9"</tt>, though both decode to the same URI.
+<p>Catalogs in Socat syntax, however, have no encoding declaration. Therefore
+<i>fxp</i> only checks for a byte-order mark at the beginning of a catalog
+in order to auto-detect a UTF-16 encoding. If it doesn't find one it assumes
+a default encoding. Because catalogs are usually written by hand, this
+is by default LATIN1. The <tt>--catalog-encoding</tt> option tells <i>fxp</i>
+to use another default encoding.
+<p><i>fxp</i> tries to guess the syntax of catalog by means of the suffix
+of its file name. A suffix of <tt>.soc</tt> or <tt>.SOC</tt> suggests to
+use Socat syntax, whereas for suffixes <tt>.xml</tt> and <tt>.XML</tt>
+the XML syntax is chosen. For files having none of these suffices, <i>fxp</i>
+assumes XML syntax. This can be changed with <tt>--catalog-syntax=soc</tt>.
+<p><img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+<a NAME="CAT-OPT"></a>Summary of Catalog Options</h2>
+
+<dl>
+<dt>
+<tt>-C uri</tt></dt>
+
+<dt>
+<tt>--catalog=uri</tt></dt>
+
+<dd>
+Use <tt>uri</tt> as a catalog. Several catalogs can be specified by repeating
+this option.</dd>
+
+<dt>
+<tt>--catalog-syntax=(soc|xml)</tt></dt>
+
+<dd>
+For catalogs with unknown suffix, specifies whether to assume Socat syntax
+or XML syntax. Defaults to <tt>xml</tt>.</dd>
+
+<dt>
+<tt>--catalog-encoding=enc</tt></dt>
+
+<dd>
+Use encoding <tt>enc</tt> for reading a catalog unless it starts with a
+byte order mark. <tt>enc</tt> must be a <a href="#ENC">supported</a> encoding.
+Defaults to <tt>LATIN1</tt>.</dd>
+
+<dt>
+<tt>--catalog-remap=[(yes|no)]</tt></dt>
+
+<dd>
+Turn on or off support for remapping system identifiers. Defaults to <tt>yes</tt>.</dd>
+
+<dt>
+<tt>--catalog-priority=(map|remap|sys)</tt></dt>
+
+<dd>
+Controls the resolving strategy in catalogs. <tt>map</tt> means that mapping
+the public identifier has highest priority; <tt>remap</tt> means that remapping
+the system identifier comes first; <tt>sys</tt> means that the catalog
+is used only if no system identifier is present. Defaults to <tt>map</tt>.</dd>
+</dl>
+<img SRC="shadow.jpg" ALT="----------------" >
+<address>
+fxp's feedback address <a href="mailto:fxp@PSI.Uni-Trier.DE">fxp@PSI.Uni-Trier.DE</a></address>
+
+</body>
+</html>

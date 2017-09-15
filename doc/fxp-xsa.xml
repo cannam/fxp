@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="no"?>
+
+<!DOCTYPE xsa PUBLIC "-//LM Garshol//DTD XML Software Autoupdate 1.0//EN//XML"
+                     "http://birk105.studby.uio.no/www_work/xsa/xsa.dtd">
+
+<xsa>
+  <vendor>
+    <name>Alexandru Berlea</name>
+    <email>aberlea@PSI.Uni-Trier.DE</email>
+    <url>http://www.informatik.uni-trier.de/~aberlea/</url>
+  </vendor>
+
+  <product id="fxp">
+    <name>fxp</name>
+    <version>1.4.1</version>
+    <last-release>20003010</last-release>
+    <info-url>http://www.informatik.uni-trier.de/~aberlea/Fxp/</info-url>
+    <changes>
+    - Bug Fixes
+    </changes>
+  </product>
+</xsa>

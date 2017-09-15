@@ -1,0 +1,334 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.73 [en] (X11; I; Linux 2.2.14 i686) [Netscape]">
+   <title>fxp - The Program fxesis</title>
+</head>
+<body bgcolor="#FFFFFF">
+
+<h1>
+<a href="index.html"><img SRC="fxp-shadow.jpg" ALT="fxp" BORDER=0  align=CENTER></a>
+The Program <i>fxesis</i></h1>
+<img SRC="shadow.jpg" ALT="----------------" >
+<table CELLSPACING=0 CELLPADDING=0 >
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#DESC">Description</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#OUT">Output Format</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#OUTEX">Output Example</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#EXA">Options by Example</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#OPT">Summary of Options</a></td>
+</tr>
+</table>
+
+<p><img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+<a NAME="DESC"></a>Description</h2>
+<i>fxesis</i> is a validating XML processor. It reads an XML document and
+produces a textual description of its Element Structure Information Set
+(ESIS). This contains only little information about the DTD, and no information
+about the document's entity structure, but provides all information about
+the document's logical (element) structure.
+<p>The typical invocation of <i>fxesis</i> is
+<blockquote>
+<pre>fxesis [option ...] [infile]</pre>
+</blockquote>
+If <tt>infile</tt> is given, <i>fxesis</i> reads its input document from
+that file, otherwise from standard input. By default, it prints its output
+to the standard output.
+<p><img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+<a NAME="OUT"></a>The Output Format</h2>
+The <i>fxesis</i> output is a series of plain text lines. The meaning of
+each line is determined by its first character. Some lines, e.g. attribute
+specifications, define arguments for a following line. All lines contain
+only LATIN1 characters, or, if the <tt><a href="#EXA-ENC">--ascii</a></tt>
+option was given, ASCII characters. In order to print other characters
+<i>fxesis</i> uses escape sequences with the following meaning:
+<blockquote>&nbsp;
+<table CELLSPACING=0 CELLPADDING=0 >
+<tr>
+<td NOWRAP><tt>\\</tt></td>
+
+<td>the character '<tt>\</tt>';&nbsp;</td>
+</tr>
+
+<tr>
+<td NOWRAP><tt>\n</tt></td>
+
+<td>a newline character;&nbsp;</td>
+</tr>
+
+<tr>
+<td NOWRAP><tt>\t</tt></td>
+
+<td>a tab character;&nbsp;</td>
+</tr>
+
+<tr>
+<td NOWRAP><tt>\U+<i>hex</i>;</tt></td>
+
+<td>the Unicode character whose hexadecimal code is <i>hex</i>.&nbsp;</td>
+</tr>
+</table>
+</blockquote>
+The following output lines can appear:
+<blockquote>&nbsp;
+<table>
+<tr VALIGN=TOP>
+<td NOWRAP><tt>-</tt><i>data</i></td>
+
+<td>A sequence of data characters, including newlines. The data need not
+have been contiguous in the input document, but may have consisted of a
+series of data characters, CDATA sections and character references, interspersed
+with comments.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP><tt>(</tt><i>elem</i></td>
+
+<td>The start of an element of type <i>elem</i>. Preceded by an <tt>A</tt>
+line for each of its attributes.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP><tt>)</tt><i>elem</i></td>
+
+<td>The end of an element of type <i>elem</i>.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP><tt>A</tt><i>att</i> <i>value</i></td>
+
+<td>A specification of attribute <i>att</i> for a following <tt>(</tt>
+(element-start) line. <i>value</i> is one out of:&nbsp;
+<table CELLSPACING=0 CELLPADDING=0 >
+<tr VALIGN=TOP>
+<td NOWRAP><tt>IMPLIED</tt></td>
+
+<td>The attribute value was implied. This is used only in validating mode
+only.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP><tt>CDATA </tt><i>data</i></td>
+
+<td>The attribute was declared <tt>CDATA</tt>; its value is <i>data</i>.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP><tt>NOTATION </tt><i>name</i></td>
+
+<td>A notation attribute with value <i>name</i>; that notation was defined
+in a previous <tt>N</tt> (notation definition) line.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP><tt>ENTITY </tt><i>name</i><tt> ...</tt></td>
+
+<td>An attribute with declared type <tt>ENTITY</tt> or <tt>ENTITIES</tt>.
+Each <i>name</i> is the name of an unparsed general entity that was defined
+in a preceding <tt>E</tt> (entity definition) line.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP><tt>TOKEN </tt><i>token</i><tt> ...</tt></td>
+
+<td>An attribute with declared type <tt>NMTOKEN</tt>, <tt>NMTOKENS</tt>,
+<tt>ID</tt>, <tt>IDREF</tt>, <tt>IDREFS</tt>, or enumeration. Each <i>token</i>
+is a name token complying with the attribute type.&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP><tt>?</tt><i>target</i> <i>text</i></td>
+
+<td>A processing instruction with target <i>target</i> and text <i>text</i>.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP><tt>E</tt><i>ent</i><tt> NDATA </tt><i>nt</i></td>
+
+<td>Defines an unparsed external entity named <i>ent</i> whose notation
+is <i>nt</i> and has been defined by a preceding <tt>N</tt> (notation definition)
+line. This line is immediately preceded by an optional <tt>p</tt> (public
+identifier) line, an <tt>s</tt> (system identifier) line and, if a filename
+could be generated, an <tt>f</tt> (filename) line for the external identifier
+declared for <i>ent</i>. An entity is defined by an <tt>E</tt> line only
+once per document.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP><tt>N</tt><i>nt</i></td>
+
+<td>Defines the notation named <i>nt</i>. This line is immediately preceded
+by an optional <tt>p</tt> (public identifier) line and an optional <tt>s</tt>
+(system identifier) line for the external identifier declared for <i>nt</i>.
+A notation is defined by an <tt>N</tt> line only once per document.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP><tt>p</tt><i>pubid</i></td>
+
+<td><i>pubid</i> is the public identifier belonging to the external identifier
+of a following <tt>N</tt> (notation definition) or <tt>E</tt> (entity definition).&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP><tt>s</tt><i>sysid</i></td>
+
+<td><i>sysid</i> is the system identifier belonging to the external identifier
+of a following <tt>N</tt> (notation definition) or <tt>E</tt> (entity definition).&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP><tt>f&lt;OSFILE></tt><i>filename</i></td>
+
+<td><i>filename</i> is the system file name generated for the external
+identifier of a following <tt>E</tt> (entity definition).&nbsp;</td>
+</tr>
+</table>
+</blockquote>
+<img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+<a NAME="OUTEX"></a>An Output Example</h2>
+Consider the example document <tt><a href="Examples/exa-5.xml">exa-5.xml</a></tt>.
+The <i>fxesis</i> output, if called without options, for this document
+is <tt><a href="Examples/exa-5.esis-8">exa-5.esis-8</a></tt>. Note that
+all the adjacent data segments of the first <tt>a</tt> element are merged
+into one; note also that there is an <tt>A</tt> line for each implied attribute.
+Furthermore, notation <tt>man</tt> is not redefined at its second occurrence.
+<p>Opposed to that, <tt>fxesis -7 -nv exa-5.xml</tt> produces the output
+in <tt><a href="Examples/exa-5.esis-7">exa-5.esis-7</a></tt>. Note the
+difference: on the one hand, no <tt>A</tt> lines are printed for implied
+attribute, because validation was turned off. On the other hand, characters
+<tt>&ouml;</tt>, <tt>&uuml;</tt> and <tt>&szlig;</tt> are represented by
+escape sequences, because they are not ASCII-characters.
+<p><img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+<a NAME="EXA"></a>Options by Example</h2>
+<i>fxesis</i> understands all options documented for <i><a href="fxp.html#EXA">fxp</a></i>;
+the additional options control how output is generated.
+<p>By default, <i>fxesis</i> writes its output to the standard output.
+It can be redirected to a file named <tt>outfile</tt> via the option <tt>--output=outfile</tt>
+or, for short, <tt>-o outfile</tt>.
+<h4>
+<a NAME="EXA-ENC"></a>Output Encoding</h4>
+By default, <i>fxesis</i> produces its output in the LATIN1 character set,
+i.e., using 8-bit characters. It can be restricted to using only 7-bit
+characters with the <tt>--ascii</tt> or, for short, <tt>-7</tt> option.
+For instance, consider the element
+<blockquote>
+<pre>&lt;addr city="K&ouml;ln">M&uuml;llerstra&szlig;e 13&lt;/addr></pre>
+</blockquote>
+Called with <tt>fxesis -8 ...</tt>, the output for this element is
+<blockquote>
+<pre>Acity CDATA K&ouml;ln
+(addr
+-M&uuml;llerstra&szlig;e 13
+)addr</pre>
+</blockquote>
+whereas <tt>fxesis -7 ...</tt> outputs the following:
+<blockquote>
+<pre>Acity CDATA K\U+f6;ln
+(addr
+-M\U+fc;llerstra\U+df;e 13
+)addr</pre>
+</blockquote>
+<img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+<a NAME="OPT"></a>Summary of Command Line Options</h2>
+Each option can be one of:
+<ul>
+<li>
+A file name specifying the input document. Only one input document may
+be specified.</li>
+
+<li>
+A long option of the form <tt>--key[=arg]</tt></li>
+
+<li>
+A short option of the form <tt>-k</tt>, where <tt>k</tt> consists of single
+character. If <tt>k</tt> consists of more than one character, each character
+is assumed to be a short option itself (e.g., <tt>-vic</tt> equals <tt>-v
+-i -c</tt>).</li>
+
+<li>
+A short option with argument of the form <tt>-k arg</tt>, where <tt>k</tt>
+consists of a single character.</li>
+
+<li>
+A negative short option of the form <tt>-nk</tt>, where <tt>k</tt> consists
+of single character. If <tt>k</tt> consists of more than one character,
+each character is assumed to be a negative short option itself (e.g., <tt>-nvic</tt>
+equals <tt>-nv -ni -nc</tt>). If <tt>k</tt> is empty, then we have the
+(non-negative) short option <tt>-n</tt>.</li>
+
+<li>
+The string <tt>--</tt>. This option is ignored, except that all remaining
+options are interpreted as file names, whether they start with <tt>-</tt>
+or not.</li>
+</ul>
+<i>fxesis</i> understands all options documented for <i><a href="fxp.html#OPT">fxp</a></i>;
+additionally, the following options are available:
+<dl>
+<dt>
+<tt>-o fname</tt></dt>
+
+<dt>
+<tt>--output=fname</tt></dt>
+
+<dd>
+Write all output, except for errors and warnings, to the file named <tt>fname</tt>.
+If <tt>fname</tt> is <tt>-</tt>, the standard output is used. Defaults
+to -.</dd>
+
+<dt>
+<tt>-7</tt></dt>
+
+<dt>
+<tt>--ascii</tt></dt>
+
+<dd>
+Produce the output in ASCII encoding, i.e., using 7-bit characters only.</dd>
+
+<dt>
+<tt>-8</tt></dt>
+
+<dt>
+<tt>--latin1</tt></dt>
+
+<dd>
+Produce output in Latin1 encoding, i.e., using 8-bit characters also. This
+is the default.</dd>
+</dl>
+<img SRC="shadow.jpg" ALT="----------------" >
+<address>
+fxp's feedback address <a href="mailto:fxp@PSI.Uni-Trier.DE">fxp@PSI.Uni-Trier.DE</a></address>
+
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.73 [en] (X11; I; Linux 2.2.14 i686) [Netscape]">
+   <title>fxp - The Program fxviz</title>
+</head>
+<body bgcolor="#FFFFFF">
+
+<h1>
+<a href="index.html"><img SRC="fxp-shadow.jpg" ALT="fxp" BORDER=0  align=CENTER></a>
+The Program <i>fxviz</i></h1>
+<img SRC="shadow.jpg" ALT="----------------" >
+<table CELLSPACING=0 CELLPADDING=0 >
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#DESC">Description</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#EXA">An Example</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#OPT">Summary of Options</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#TRIB">Tributes</a></td>
+</tr>
+</table>
+
+<p><img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+<a NAME="DESC"></a>Description</h2>
+<i>fxviz</i> is an XML tree visualizer. It reads an XML document and produces
+a graph description file suitable as input to <i><a href="ftp://ftp.cs.uni-sb.de/pub/graphics/vcg/">vcg</a></i>.
+The document tree can then be viewed or printed with the help of <i>xvcg</i>.
+The typical invocation is
+<blockquote>
+<pre>fxviz [option ...] [infile]</pre>
+</blockquote>
+If <tt>infile</tt> is given, <i>fxviz</i> reads its input document from
+that file, otherwise from standard input. By default, it prints its output
+to the standard output. The generated tree contains the following kinds
+of nodes:
+<blockquote>&nbsp;
+<table>
+<tr VALIGN=TOP>
+<th ALIGN=LEFT NOWRAP>node type&nbsp;</th>
+
+<th ALIGN=LEFT NOWRAP>color&nbsp;</th>
+
+<th ALIGN=LEFT NOWRAP>information&nbsp;</th>
+
+<th ALIGN=LEFT NOWRAP>unfolds into&nbsp;</th>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP>comment&nbsp;</td>
+
+<td NOWRAP>yellow&nbsp;</td>
+
+<td NOWRAP>file position&nbsp;</td>
+
+<td NOWRAP>-&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP>processing instruction&nbsp;</td>
+
+<td NOWRAP>orange&nbsp;</td>
+
+<td NOWRAP>file position&nbsp;</td>
+
+<td NOWRAP>-&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP>element&nbsp;</td>
+
+<td NOWRAP>light blue&nbsp;</td>
+
+<td NOWRAP>file position&nbsp;</td>
+
+<td NOWRAP>attributes&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP>text&nbsp;</td>
+
+<td NOWRAP>beige&nbsp;</td>
+
+<td NOWRAP>file position&nbsp;</td>
+
+<td NOWRAP>data segments&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP>attribute&nbsp;</td>
+
+<td NOWRAP>light green&nbsp;</td>
+
+<td NOWRAP>-&nbsp;</td>
+
+<td NOWRAP>-&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td NOWRAP>attribute value&nbsp;</td>
+
+<td NOWRAP>beige&nbsp;</td>
+
+<td NOWRAP>attribute type&nbsp;</td>
+
+<td NOWRAP>-&nbsp;</td>
+</tr>
+</table>
+</blockquote>
+Most of the nodes are annotated with their starting position in the XML
+source; attribute value nodes provide the attribute type instead.
+<p>A text node is usually the result of merging several adjacent text fragments
+into a single one. It is, however, possible to unfold a text node into
+the sequence of fragments it consists of.
+<p>Simimlarly, an element node can be unfolded such that each of its attributes
+is represented by its own attribute node as a child of the element.
+<p><img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+<a NAME="EXA"></a>An Example</h2>
+Consider the follwing XML document <tt>test.xml</tt>:
+<blockquote>
+<pre>&lt;!DOCTYPE a [
+&lt;!ELEMENT a ANY>
+&lt;!ELEMENT b ANY>
+&lt;!-- comment in DTD -->
+&lt;!ATTLIST a x NMTOKEN "foo"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #IMPLIED>
+&lt;!ATTLIST b x (yes|no) #REQUIRED&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y IDREFS&nbsp;&nbsp; #IMPLIED>
+]>
+
+&lt;?foo pi in prolog ?>
+&lt;a x="yup" y="i-1">
+&nbsp; &lt;!-- comment in a -->
+&nbsp; &lt;b x="yes" y="i-1">
+&nbsp;&nbsp;&nbsp; This is text with another &lt;a>a element with an empty &lt;b/> &lt;/a>,&nbsp;
+&nbsp;&nbsp;&nbsp; a character reference &amp;#x3C; and a &lt;![CDATA[CDATA section]]>
+&nbsp; &lt;/b>&nbsp;
+&nbsp; &lt;?foo pi in a ?>
+&lt;/a>
+&lt;!-- comment in epilog --></pre>
+</blockquote>
+The graph description produced by <i>fxviz</i> will display the document
+tree as follows:
+<p><img SRC="exa-vcg-1.gif" ALT="graph output example" HSPACE=20 >
+<p>Each node in the tree is connected to each of its children by an edge.
+Additionally, the nodes are annotated this their starting postions in the
+XML source. These positions can be viewed by selecting <tt>Node Information
+=> Source Position</tt> in the <i>vcg</i> menu:
+<p><img SRC="exa-vcg-2.gif" ALT="graph output example" HSPACE=20 >
+<p>Text nodes are merged such that no text node has another text node as
+a direct sibling. If you wish to see how a merged text node is composed
+of text fragments, apply <i>vcg</i>'s <tt>Unfold Subgraph</tt> function
+to that node. For the second text-node in the <tt>b</tt>-element this results
+in:
+<p><img SRC="exa-vcg-3.gif" ALT="graph output example" HSPACE=20 >
+<p>Additional information about attributes of elements is also available
+by applying <i>vcg</i>'s <tt>Unfold Subgraph</tt> function to the element
+node: the attributes are removed from the element node's label, and for
+each attribute a new attribute node is inserted before the element's content.
+Each attribute node is labeled with the attribute name and has as a single
+child the attribute value:
+<p><img SRC="exa-vcg-4.gif" ALT="graph output example" HSPACE=20 >
+<p>The values of defaulted attributed are marked, and unspecified attributes
+are either marked as implied or missing:
+<p><img SRC="exa-vcg-5.gif" ALT="graph output example" HSPACE=20 >
+<p>Finally, if you are interested in the attribute type of some specified
+attribute, use the <tt>Node Information => Attribute Type</tt> function:
+<p><img SRC="exa-vcg-6.gif" ALT="graph output example" HSPACE=20 >
+<p><img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+<a NAME="OPT"></a>Summary of Command Line Options</h2>
+Each option can be one of:
+<ul>
+<li>
+A file name specifying the input document. Only one input document may
+be specified.</li>
+
+<li>
+A long option of the form <tt>--key[=arg]</tt></li>
+
+<li>
+A short option of the form <tt>-k</tt>, where <tt>k</tt> consists of single
+character. If <tt>k</tt> consists of more than one character, each character
+is assumed to be a short option itself (e.g., <tt>-vic</tt> equals <tt>-v
+-i -c</tt>).</li>
+
+<li>
+A short option with argument of the form <tt>-k arg</tt>, where <tt>k</tt>
+consists of a single character.</li>
+
+<li>
+A negative short option of the form <tt>-nk</tt>, where <tt>k</tt> consists
+of single character. If <tt>k</tt> consists of more than one character,
+each character is assumed to be a negative short option itself (e.g., <tt>-nvic</tt>
+equals <tt>-nv -ni -nc</tt>). If <tt>k</tt> is empty, then we have the
+(non-negative) short option <tt>-n</tt>.</li>
+
+<li>
+The string <tt>--</tt>. This option is ignored, except that all remaining
+options are interpreted as file names, whether they start with <tt>-</tt>
+or not.</li>
+</ul>
+<i>fxviz</i> understands all options documented for <i><a href="fxp.html#OPT">fxp</a></i>;
+additionally, the following options are available:
+<dl>
+<dt>
+<tt>-o fname</tt></dt>
+
+<dt>
+<tt>--output=fname</tt></dt>
+
+<dd>
+Write all output, except for errors and warnings, to the file named <tt>fname</tt>.
+If <tt>fname</tt> is <tt>-</tt>, the standard output is used. Defaults
+to -.</dd>
+</dl>
+<img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+<a NAME="TRIB"></a>Tributes</h2>
+<i>fxviz</i> generates output for <i><a href="ftp://ftp.cs.uni-sb.de/pub/graphics/vcg/">vcg</a></i>
+which is an excellent graph layout program written by Georg Sander at the
+University of Saarbr&uuml;cken.
+<p><img SRC="shadow.jpg" ALT="----------------" >
+<address>
+fxp's feedback address <a href="mailto:fxp@PSI.Uni-Trier.DE">fxp@PSI.Uni-Trier.DE</a></address>
+
+</body>
+</html>

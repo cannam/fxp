@@ -1,0 +1,13 @@
+
+ARCH_N_OPSYS=`${SML_BINDIR}/.arch-n-opsys`
+if [ "$?" != "0" ]; then
+  echo "$CMD: unable to determine architecture/operating system"
+  exit 1
+fi
+eval ${ARCH_N_OPSYS}
+
+PROG=`basename $0`
+HEAP=${FXP_LIBDIR}/_${PROG}
+RUN=${SML_BINDIR}/.run/run.${ARCH}-${OPSYS}
+
+exec ${RUN} @SMLcmdname=$0 @SMLdebug=/dev/null @SMLload=${HEAP} "$@"

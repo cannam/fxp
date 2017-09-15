@@ -1,0 +1,15 @@
+<!DOCTYPE exa [
+	
+<!ELEMENT exa (a|b)*>
+<!ELEMENT a EMPTY>
+<!ELEMENT b ANY>
+
+<!ATTLIST a x (yes|no)         "yes"
+            y (yes|perhaps|no) "no">
+<!ATTLIST a x NMTOKEN "yes">
+]>
+
+<exa>
+<a></a>
+<b/>
+</exa>

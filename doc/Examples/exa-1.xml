@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE exa SYSTEM "exa-1.ext" [
+
+<!ELEMENT exa (a|b)*>
+
+<!ENTITY ext SYSTEM "ext.elem">
+<!ENTITY % ext SYSTEM "ext.decl">
+
+%ext;
+
+<!ELEMENT a (b*)>
+<!ATTLIST a num NMTOKEN #FIXED "0">
+]>
+
+<exa>
+<a num="a" id="id1">
+<a id="id1"/>
+&ext;
+<b nmu="1"> </b>
+</a>
+</exa>

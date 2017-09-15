@@ -1,0 +1,12 @@
+<!DOCTYPE exa [
+<!ENTITY q "quote sign">
+<!ENTITY int "internal entity">
+<!ENTITY ext SYSTEM "ext.ent">
+<!ATTLIST a x NMTOKENS #IMPLIED
+            y CDATA    #IMPLIED>
+]>
+<a x=" a   b " y="two &q;s: &#x27; and &#x22;">    
+here is a character reference: &#64;
+here is an &int;           
+here is an &ext;
+</a>

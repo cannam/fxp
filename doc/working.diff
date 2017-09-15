@@ -1,0 +1,339 @@
+diff -Naur fxp-1.4.6/Makefile fxp-win32-1.4.6/Makefile
+--- fxp-1.4.6/Makefile	2003-10-09 09:48:03.000000000 -0500
++++ fxp-win32-1.4.6/Makefile	2003-10-17 13:22:17.000000000 -0500
+@@ -6,7 +6,7 @@
+ ##############################################################################
+ # These are the locations for executables, heap images and library files
+ ##############################################################################
+-PREFIX     = /home/berlea/xmlsoft
++PREFIX     = /cygdrive/d/xml
+ FXP_BINDIR = ${PREFIX}/bin
+ FXP_LIBDIR = ${PREFIX}/fxp
+ 
+@@ -15,15 +15,15 @@
+ # SML-NJ executable with the Compilation manager built-in. If sml is in 
+ # your PATH at execution time, you fon't need the full path here.  
+ ##############################################################################
+-SML_BINDIR = /usr/share/smlnj/bin
++SML_BINDIR = /cygdrive/d/smlnj-110.43/bin
+ SML_EXEC   = ${SML_BINDIR}/sml
+ ##############################################################################
+ # No need to change this for SML-NJ 110.0.6. For earlier or working versions  
+ # 110.19 you might have to use the second or third line. This is the
+ # compilation manager function for making with a named description file. 
+ ##############################################################################
+-SML_MAKEDEF= val make = CM.make'
+-#SML_MAKEDEF= val make = CM.make
++#SML_MAKEDEF= val make = CM.make'
++SML_MAKEDEF= val make = CM.make
+ #SML_MAKEDEF= fun make x = CM.make'{force_relink=true, group=x}
+ 
+ ##############################################################################
+@@ -35,7 +35,7 @@
+ COPY      = cp -f
+ CHMOD     = chmod
+ FIND      = find
+-MKDIRHIER = mkdirhier
++MKDIRHIER = mkdir -p
+ 
+ ##############################################################################
+ # nothing to change below this line
+diff -Naur fxp-1.4.6/src/Apps/Canon/canon.cm fxp-win32-1.4.6/src/Apps/Canon/canon.cm
+--- fxp-1.4.6/src/Apps/Canon/canon.cm	2003-10-09 09:48:00.000000000 -0500
++++ fxp-win32-1.4.6/src/Apps/Canon/canon.cm	2003-10-17 16:16:42.000000000 -0500
+@@ -5,3 +5,4 @@
+     canonHooks.sml
+     canon.sml
+     ../../fxlib.cm
++    $/basis.cm
+diff -Naur fxp-1.4.6/src/Apps/Copy/copy.cm fxp-win32-1.4.6/src/Apps/Copy/copy.cm
+--- fxp-1.4.6/src/Apps/Copy/copy.cm	2003-10-09 09:48:00.000000000 -0500
++++ fxp-win32-1.4.6/src/Apps/Copy/copy.cm	2003-10-17 16:16:51.000000000 -0500
+@@ -5,3 +5,4 @@
+     copyHooks.sml
+     copy.sml
+     ../../fxlib.cm
++    $/basis.cm
+diff -Naur fxp-1.4.6/src/Apps/Copy/copyEncode.sml fxp-win32-1.4.6/src/Apps/Copy/copyEncode.sml
+--- fxp-1.4.6/src/Apps/Copy/copyEncode.sml	2003-10-09 09:48:00.000000000 -0500
++++ fxp-win32-1.4.6/src/Apps/Copy/copyEncode.sml	2003-10-17 14:30:01.000000000 -0500
+@@ -126,7 +126,7 @@
+ 		  | _ => if c<>q andalso validChar(f,c) then putChar(f,c) else putCharRef(f,c)
+ 				   
+ 	    val f1 = putChar(f,q)
+-	    val f2 = Vector.foldli putOne f1 (cv,0,NONE)
++            val f2 = Vector.foldli putOne f1 cv
+ 	    val f3 = putChar(f2,q)
+ 	 in f3
+ 	 end
+diff -Naur fxp-1.4.6/src/Apps/Esis/esis.cm fxp-win32-1.4.6/src/Apps/Esis/esis.cm
+--- fxp-1.4.6/src/Apps/Esis/esis.cm	2003-10-09 09:48:01.000000000 -0500
++++ fxp-win32-1.4.6/src/Apps/Esis/esis.cm	2003-10-17 16:17:04.000000000 -0500
+@@ -5,3 +5,4 @@
+     esisHooks.sml
+     esisData.sml
+     ../../fxlib.cm
++    $/basis.cm
+diff -Naur fxp-1.4.6/src/Apps/Null/null.cm fxp-win32-1.4.6/src/Apps/Null/null.cm
+--- fxp-1.4.6/src/Apps/Null/null.cm	2003-10-09 09:47:59.000000000 -0500
++++ fxp-win32-1.4.6/src/Apps/Null/null.cm	2003-10-17 16:16:57.000000000 -0500
+@@ -4,3 +4,4 @@
+     null.sml
+     nullHard.sml
+     ../../fxlib.cm
++    $/basis.cm
+diff -Naur fxp-1.4.6/src/Apps/Viz/viz.cm fxp-win32-1.4.6/src/Apps/Viz/viz.cm
+--- fxp-1.4.6/src/Apps/Viz/viz.cm	2003-10-09 09:48:01.000000000 -0500
++++ fxp-win32-1.4.6/src/Apps/Viz/viz.cm	2003-10-17 16:17:32.000000000 -0500
+@@ -3,3 +3,4 @@
+     viz.sml
+     vizHooks.sml
+     ../../fxlib.cm
++    $/basis.cm
+diff -Naur fxp-1.4.6/src/Parser/Dfa/dfaPassTwo.sml fxp-win32-1.4.6/src/Parser/Dfa/dfaPassTwo.sml
+--- fxp-1.4.6/src/Parser/Dfa/dfaPassTwo.sml	2003-10-09 09:47:55.000000000 -0500
++++ fxp-win32-1.4.6/src/Parser/Dfa/dfaPassTwo.sml	2003-10-17 14:24:41.000000000 -0500
+@@ -72,6 +72,6 @@
+ 
+ 	    val _ = do_cm (nil,true) cmi
+ 
+-	 in Array.extract (table,0,NONE)
++	 in Array.vector table
+ 	 end
+     end
+diff -Naur fxp-1.4.6/src/Parser/Dfa/dfaString.sml fxp-win32-1.4.6/src/Parser/Dfa/dfaString.sml
+--- fxp-1.4.6/src/Parser/Dfa/dfaString.sml	2003-10-09 09:47:55.000000000 -0500
++++ fxp-win32-1.4.6/src/Parser/Dfa/dfaString.sml	2003-10-17 14:07:50.000000000 -0500
+@@ -68,11 +68,11 @@
+ 	    (fn (i,q,yet) => if q<0 then yet 
+ 			     else " "::Elem2String (i+lo)::"->"::State2String q::yet)
+ 	    (if fin then [" [Final]"] else nil)
+-		(tab,0,NONE))
++		tab)
+ 	   
+ 	fun Dfa2String Elem2String tab =
+ 	   String.concat 
+ 	   (Vector.foldri
+ 	    (fn (q,row,yet) => State2String q::":"::Row2String Elem2String row::yet)
+-	    nil (tab,0,NONE))
++	    nil tab)
+     end
+diff -Naur fxp-1.4.6/src/Parser/Dfa/dfaUtil.sml fxp-win32-1.4.6/src/Parser/Dfa/dfaUtil.sml
+--- fxp-1.4.6/src/Parser/Dfa/dfaUtil.sml	2003-10-09 09:47:54.000000000 -0500
++++ fxp-win32-1.4.6/src/Parser/Dfa/dfaUtil.sml	2003-10-17 14:22:35.000000000 -0500
+@@ -124,7 +124,7 @@
+ 	    val tab = Array.array(hi-lo+1,dfaError)
+ 	    val _ = app (fn (q,a) => Array.update (tab,a-lo,q)) flw
+ 	 in 
+-	    (lo,hi,Array.extract (tab,0,NONE),fin)
++	    (lo,hi,Array.vector tab,fin)
+ 	 end
+ 
+    end
+diff -Naur fxp-1.4.6/src/Parser/Dtd/dtdAttributes.sml fxp-win32-1.4.6/src/Parser/Dtd/dtdAttributes.sml
+--- fxp-1.4.6/src/Parser/Dtd/dtdAttributes.sml	2003-10-09 09:47:55.000000000 -0500
++++ fxp-win32-1.4.6/src/Parser/Dtd/dtdAttributes.sml	2003-10-17 14:12:28.000000000 -0500
+@@ -65,7 +65,7 @@
+ 				     ord(String.sub(s,1))-65,
+ 				     true)) 
+ 	       iso639codes
+-	 in Vector.tabulate(26,fn i => Array.extract (Array.sub(arr,i),0,NONE))
++	 in Vector.tabulate(26,fn i => Array.vector (Array.sub(arr,i)))
+ 	 end
+ 
+       (*--------------------------------------------------------------------*)
+diff -Naur fxp-1.4.6/src/Parser/Params/dtd.sml fxp-win32-1.4.6/src/Parser/Params/dtd.sml
+--- fxp-1.4.6/src/Parser/Params/dtd.sml	2003-10-09 09:47:56.000000000 -0500
++++ fxp-win32-1.4.6/src/Parser/Params/dtd.sml	2003-10-17 14:09:57.000000000 -0500
+@@ -290,10 +290,10 @@
+ 	    val _ = map (fn i => Array.update(preRedef,i,false)) [1,2,3,4,5]
+ 	    val _ = GenEnt2Index dtd [0wx2D] (* "-" *)
+ 	    val _ = ParEnt2Index dtd [0wx2D] (* "-" *)
+-	    val _ = Vector.appi 
+-	       (fn (_,(name,lit,cs)) 
+-		=> (setGenEnt dtd (GenEnt2Index dtd name,(GE_INTERN(lit,cs),false)))) 
+-	       (predefined,1,NONE)
++            val _ = VectorSlice.appi 
++               (fn (_,(name,lit,cs)) 
++                => (setGenEnt dtd (GenEnt2Index dtd name,(GE_INTERN(lit,cs),false))))
++               (VectorSlice.slice (predefined,1,NONE))
+ 	 in ()
+ 	 end
+ 
+diff -Naur fxp-1.4.6/src/Parser/Parse/parseContent.sml fxp-win32-1.4.6/src/Parser/Parse/parseContent.sml
+--- fxp-1.4.6/src/Parser/Parse/parseContent.sml	2003-10-09 09:47:56.000000000 -0500
++++ fxp-win32-1.4.6/src/Parser/Parse/parseContent.sml	2003-10-17 14:26:30.000000000 -0500
+@@ -587,7 +587,9 @@
+ 	       val _ = Array.update(dataBuffer,0,c0)
+ 
+ 	       fun data_hook (i,(a,q)) = 
+-		  hookData(a,((!pos0,getPos q),Array.extract(dataBuffer,0,SOME i),false))
++		  hookData(a,((!pos0,getPos q),
++			      ArraySlice.vector(ArraySlice.slice(dataBuffer,0,SOME i)),
++			      false))
+ 	       fun takeOne (c,qE,i,aq as (a,q)) = 
+ 		  if i<DATA_BUFSIZE then (i+1,aq) before Array.update(dataBuffer,i,c)
+ 		  else let val a1 = data_hook(i,(a,qE))
+diff -Naur fxp-1.4.6/src/Unicode/Chars/charClasses.sml fxp-win32-1.4.6/src/Unicode/Chars/charClasses.sml
+--- fxp-1.4.6/src/Unicode/Chars/charClasses.sml	2003-10-09 09:47:58.000000000 -0500
++++ fxp-win32-1.4.6/src/Unicode/Chars/charClasses.sml	2003-10-17 13:49:08.000000000 -0500
+@@ -91,7 +91,7 @@
+       (*--------------------------------------------------------------------*)
+       fun initialize(min,max) = 
+ 	 Array.array((Chars.toInt max-Chars.toInt min+1) div 32+1,0wx0):MutableClass
+-      fun finalize arr = Array.extract(arr,0,NONE)
++      fun finalize arr = Array.vector arr
+ 	 
+       (*--------------------------------------------------------------------*)
+       (* add a single character to a CharClass.                             *)
+diff -Naur fxp-1.4.6/src/Unicode/Chars/uniChar.sml fxp-win32-1.4.6/src/Unicode/Chars/uniChar.sml
+--- fxp-1.4.6/src/Unicode/Chars/uniChar.sml	2003-10-09 09:47:58.000000000 -0500
++++ fxp-win32-1.4.6/src/Unicode/Chars/uniChar.sml	2003-10-17 13:43:07.000000000 -0500
+@@ -108,10 +108,14 @@
+ 	    if len<=maxlen orelse maxlen=0 
+ 	       then Data2String (Vector2Data vec)
+ 	    else let 
+-		    val cs1 = Vector.foldri 
+-		       (fn (_,c,cs) => c::cs) nil (vec,0,SOME (maxlen div 2))
+-		    val cs2 = Vector.foldri 
+-		       (fn (_,c,cs) => c::cs) nil (vec,len-3-maxlen div 2,NONE)
++		    val cs1 = VectorSlice.foldri
++		       (fn (_,c,cs) => c::cs)
++		       nil
++		       (VectorSlice.slice (vec,0,SOME (maxlen div 2)))
++		    val cs2 = VectorSlice.foldri 
++		       (fn (_,c,cs) => c::cs)
++		       nil
++		       (VectorSlice.slice (vec,len-3-maxlen div 2,NONE))
+ 		 in Data2String cs1^"..."^Data2String cs2
+ 		 end
+ 	 end
+diff -Naur fxp-1.4.6/src/Unicode/Uri/uriEncode.sml fxp-win32-1.4.6/src/Unicode/Uri/uriEncode.sml
+--- fxp-1.4.6/src/Unicode/Uri/uriEncode.sml	2003-10-09 09:47:57.000000000 -0500
++++ fxp-win32-1.4.6/src/Unicode/Uri/uriEncode.sml	2003-10-17 13:52:57.000000000 -0500
+@@ -73,7 +73,7 @@
+ 						   in c2::c1:: #"%"::s
+ 						   end) 
+ 			      s (encodeCharUtf8 c)) 
+-	    nil (cv,0,NONE)
++	    nil cv
+ 	 in String.implode (rev revd)
+ 	 end
+ 
+@@ -85,7 +85,7 @@
+ 				 else let val (c1,c2) = Byte2Cc (Char2Byte c)
+ 				      in c2::c1:: #"%"::s
+ 				      end)) 
+-	    nil (cv,0,NONE)
++	    nil cv
+ 	 in String.implode (rev revd)
+ 	 end
+ 
+diff -Naur fxp-1.4.6/src/Util/SymDict/dict.sml fxp-win32-1.4.6/src/Util/SymDict/dict.sml
+--- fxp-1.4.6/src/Util/SymDict/dict.sml	2003-10-09 09:47:59.000000000 -0500
++++ fxp-win32-1.4.6/src/Util/SymDict/dict.sml	2003-10-17 13:57:44.000000000 -0500
+@@ -230,7 +230,7 @@
+                in ()
+                end
+          in 
+-	    Array.appi addTo (oldTab,0,NONE)
++	    Array.appi addTo oldTab
+          end
+ 
+       (*--------------------------------------------------------------------*)
+@@ -316,8 +316,8 @@
+       (*--------------------------------------------------------------------*)
+       fun printDict X2String ({desc,tab,count,...}:'a Dict) = 
+          (print (desc^" dictionary:\n");
+-          Array.appi 
++          ArraySlice.appi 
+           (fn (n,(key,value)) =>
+            print ("  "^Int.toString n^": "^Key.toString key^" = "^X2String value^"\n")) 
+-          (!tab,0,SOME (!count))) 
++          (ArraySlice.slice(!tab,0,SOME (!count))))
+    end
+diff -Naur fxp-1.4.6/src/Util/SymDict/symbolTable.sml fxp-win32-1.4.6/src/Util/SymDict/symbolTable.sml
+--- fxp-1.4.6/src/Util/SymDict/symbolTable.sml	2003-10-09 09:47:59.000000000 -0500
++++ fxp-win32-1.4.6/src/Util/SymDict/symbolTable.sml	2003-10-17 14:03:39.000000000 -0500
+@@ -219,7 +219,7 @@
+ 		  val _ = Array.update(newTab,i,key)
+ 	       in ()
+ 	       end
+-	    val _ = Array.appi addToNew (!tab,0,NONE)
++	    val _ = Array.appi addToNew (!tab)
+ 
+ 	    val _ = tab   := newTab
+ 	    val _ = hash  := newHash
+@@ -300,15 +300,15 @@
+       (* extract the contents of a symbol table to a vector.                *)
+       (*--------------------------------------------------------------------*)
+       fun extractSymTable({count,tab,...}:SymTable) = 
+-	 Array.extract(!tab,0,SOME(!count))
++	 ArraySlice.vector(ArraySlice.slice(!tab,0,SOME(!count)))
+ 
+       (*--------------------------------------------------------------------*)
+       (* print the contents of the symbol table.                            *)
+       (*--------------------------------------------------------------------*)
+       fun printSymTable ({desc,tab,count,...}:SymTable) = 
+ 	 (print (desc^" table:\n");
+-	  Array.appi 
++	  ArraySlice.appi 
+ 	  (fn (n,key) =>
+ 	   print ("  "^Int.toString n^": "^Key.toString key^"\n")) 
+-	  (!tab,0,SOME (!count))) 
++	  (ArraySlice.slice(!tab,0,SOME (!count))))
+    end
+diff -Naur fxp-1.4.6/src/Util/intSets.sml fxp-win32-1.4.6/src/Util/intSets.sml
+--- fxp-1.4.6/src/Util/intSets.sml	2003-10-09 09:47:58.000000000 -0500
++++ fxp-win32-1.4.6/src/Util/intSets.sml	2003-10-17 14:20:11.000000000 -0500
+@@ -49,8 +49,8 @@
+ 
+       fun normalize (vec:IntSet) = 
+ 	 let val max = Vector.foldli
+-	    (fn (i,w,max) => if w=0wx0 then i else max) 0 (vec,0,NONE)
+-	 in Vector.extract (vec,0,SOME max)
++            (fn (i,w,max) => if w=0wx0 then i else max) 0 vec
++         in VectorSlice.vector(VectorSlice.slice (vec,0,SOME max))
+ 	 end
+ 
+       val emptyIntSet = Vector.fromList nil : IntSet
+@@ -88,7 +88,7 @@
+ 	    val size = Vector.length vec
+ 	 in 
+ 	    if size>idx 
+-	       then Vector.mapi (fn (i,x) => if i=idx then x||mask else x) (vec,0,NONE)
++	       then Vector.mapi (fn (i,x) => if i=idx then x||mask else x) vec
+ 	    else Vector.tabulate 
+ 	       (idx+1,fn i => if i<size then Vector.sub(vec,i) else if i=idx then mask else 0w0)
+ 	 end
+@@ -100,7 +100,7 @@
+ 	    val vec1 = if size<=idx then vec
+ 		       else let val mask = !! (0w1 << (Word.fromInt (n mod wordSize)))
+ 			    in Vector.mapi 
+-			       (fn (i,x) => if i=idx then x && mask else x) (vec,0,NONE)
++                               (fn (i,x) => if i=idx then x && mask else x) vec
+ 			    end
+ 	 in normalize vec1
+ 	 end
+diff -Naur fxp-1.4.6/src/Util/utilString.sml fxp-win32-1.4.6/src/Util/utilString.sml
+--- fxp-1.4.6/src/Util/utilString.sml	2003-10-09 09:47:58.000000000 -0500
++++ fxp-win32-1.4.6/src/Util/utilString.sml	2003-10-17 13:38:53.000000000 -0500
+@@ -230,6 +230,9 @@
+ 	 if Vector.length vec=0 then pre^post
+ 	 else String.concat
+ 	    (pre::X2String(Vector.sub(vec,0))::
+-	     Vector.foldri (fn (_,x,yet) => sep::X2String x::yet) [post] (vec,1,NONE))
++	     VectorSlice.foldri
++		 (fn (_,x,yet) => sep::X2String x::yet)
++		 [post]
++		 (VectorSlice.slice (vec,1,NONE)))
+       fun Vector2String X2String vec = Vector2xString ("#[",",","]") X2String vec
+    end
+diff -Naur fxp-1.4.6/src/fxlib.cm fxp-win32-1.4.6/src/fxlib.cm
+--- fxp-1.4.6/src/fxlib.cm	2003-10-09 09:47:59.000000000 -0500
++++ fxp-win32-1.4.6/src/fxlib.cm	2003-10-17 16:16:27.000000000 -0500
+@@ -92,3 +92,4 @@
+     Util/SymDict/intDict.sml
+     Util/utilCompare.sml
+     config.sml
++    $/basis.cm

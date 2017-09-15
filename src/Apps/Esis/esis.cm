@@ -1,0 +1,8 @@
+Group is
+    esisOptions.sml
+    esisOutput.sml
+    esis.sml
+    esisHooks.sml
+    esisData.sml
+    ../../fxlib.cm
+    $/basis.cm

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="LATIN1"?>
+
+<!DOCTYPE exa [
+
+<!NOTATION text PUBLIC "BSD//A Program for viewing text//EN" "/bin/cat">
+<!NOTATION man  SYSTEM "/usr/bin/nroff">
+
+<!ENTITY fxp.manpage SYSTEM "/usr/man/man1/fxp.1" NDATA man>
+
+<!ELEMENT exa (a|b)*>
+<!ELEMENT a ANY>
+<!ELEMENT b ANY>
+
+<!ATTLIST a bold (yes|no)           "no"
+	    id   ID                 #IMPLIED
+            not  NOTATION(text|man) "text"
+            ent  ENTITIES           #IMPLIED
+            num  NMTOKEN            #IMPLIED
+            ref  CDATA              #IMPLIED>
+
+<!ENTITY quot "&#x22;">
+]>
+
+<exa>
+<a id="first-a" ent="fxp.manpage" ref="www.fxp.org">
+There is a comment <!-- comment --> in this line.
+This line has a character referenc&#x65; and 
+this one has a &quot;quoted general entity reference&quot;.  
+<!-- now comes a cdata section -->
+<![CDATA[this is a cdata section!]]>
+<?see this pi??>
+</a>
+<a not="man">
+Er wohnt in Köln, in der Müllerstraße 13.
+</a></exa>

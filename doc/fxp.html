@@ -1,0 +1,793 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.73 [en] (X11; I; Linux 2.2.14 i686) [Netscape]">
+   <title>fxp - The Program fxp</title>
+</head>
+<body bgcolor="#FFFFFF">
+
+<h1>
+<a href="index.html"><img SRC="fxp-shadow.jpg" ALT="fxp" BORDER=0  align=CENTER></a>
+The Program <i>fxp</i></h1>
+<img SRC="shadow.jpg" ALT="----------------" >
+<table CELLSPACING=0 CELLPADDING=0 >
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#DESC">Description</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#EXA">Options by Example</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#OPT">Summary of Options</a></td>
+</tr>
+</table>
+
+<p><img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+<a NAME="DESC"></a>Description</h2>
+<i>fxp</i> is a validating XML parser. It reads an XML document and reports
+all well-formedness errors, validity errors and other errors in that document.
+It can also warn about interoperability features and other issues mentioned
+in the XML recommendation.
+<p>The typical invocation of <i>fxp</i> is
+<blockquote>
+<pre>fxp [option ...] [infile]</pre>
+</blockquote>
+If <tt>infile</tt> is given, <i>fxp</i> reads its input document from that
+file, otherwise from standard input.
+<p><img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+<a NAME="EXA"></a>Options by Example</h2>
+
+<table CELLSPACING=0 CELLPADDING=0 >
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#EXA-ERR">Controlling Error Printing</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#EXA-VAL">Validating and Non-Validating Mode</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#EXA-COMP">Compatibility Modes</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#EXA-INTER">Interoperability Modes</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="#EXA-OTHER">Other Errors and Warnings</a></td>
+</tr>
+
+<tr>
+<td><img SRC="ball-shadow.jpg" ALT="o" ></td>
+
+<td><a href="features.html#CAT-EXA">Catalog Support</a></td>
+</tr>
+</table>
+
+<h4>
+<a NAME="EXA-ERR"></a>Controlling Error Printing</h4>
+By default <i>fxp</i> reports all errors and warnings to the standard error.
+This can be controlled by options:
+<ul>
+<li>
+All messages can be redirected to a file named <tt>errfile</tt> via the
+option <tt>--error-output=errfile</tt> or, for short, <tt>-e errfile</tt>.</li>
+
+<li>
+All messages can be suppressed by supplying the <tt>--silent</tt> option,
+or <tt>-s</tt> for short.</li>
+
+<li>
+By default, the parser tries avoid printing an error that has already been
+printed earlier. E.g., if an attribute is misspelled in the attribute list
+declaration, there will be an undeclared-attribute error ech time this
+attribute is actually specified for an element. Printing of all but the
+first of these errors is suppressed. In order to make <i>fxp</i> print
+this kind of duplicate error messages, use the <tt>--few-errors=no</tt>
+option.</li>
+</ul>
+
+<h4>
+<a NAME="EXA-VAL"></a>Validating and Non-Validating Mode</h4>
+By default <i>fxp</i> is a validating parser, but it can be run in non-validating
+mode with the <tt>--validate=no</tt> or, for short, <tt>-nv</tt> option.
+This has the following effects:
+<ul>
+<li>
+only the internal subset of the DTD is parsed and checked for well-formedness;</li>
+
+<li>
+the external subset and all references to external parameter entities are
+ignored;</li>
+
+<li>
+declarations in the internal subset are processed only upto the first reference
+to an external parameter entity;</li>
+
+<li>
+validity constraints are not verified;</li>
+
+<li>
+no referenced parameter entities are included;</li>
+
+<li>
+by default, no external parsed general entities are included; this can
+be changed with the <tt>--include-external</tt> option;</li>
+
+<li>
+all attributes for which no declaration has been processed are assumed
+to be declared <tt>CDATA</tt> with default value <tt>#IMPLIED</tt>;</li>
+</ul>
+For instance, consider an example document <tt><a href="Examples/exa-1.xml">exa-1.xml</a></tt>,
+referencing files <tt><a href="Examples/exa-1.ext">exa-1.ext</a></tt>,
+<tt><a href="Examples/ext.elem">ext.elem</a></tt> and <tt><a href="Examples/ext.decl">ext.decl</a></tt>.
+Running
+<blockquote>
+<pre>fxp exa-1.xml</pre>
+</blockquote>
+reports the following errors:
+<blockquote>
+<pre>[exa-1.xml:17.11] Error: Attribute 'num' has the value 'a' but was declared with
+&nbsp;&nbsp;&nbsp; a fixed default value of '0'.
+[exa-1.xml:18.12] Error: ID name 'id1' already occurred as an attribute value.
+[exa-1.xml:19.0] Error: Element type 'a' not allowed at this point in the&nbsp;
+&nbsp;&nbsp;&nbsp; content of element 'a'.
+[ext.elem:1.11] Error: Attribute 'num' has the value '1' but was declared with a
+&nbsp;&nbsp;&nbsp; fixed default value of '0'.
+[ext.elem:1.15] Error: Element 'a' was ended by an end-tag for 'b'.
+[exa-1.xml:20.7] Error: Attribute 'nmu' was not declared for element type 'b'.
+[exa-1.xml:20.12] Error: No value was specified for required attribute 'num'.
+[exa-1.xml:20.12] Error: The end-tag for element 'b' with declared EMPTY content
+&nbsp;&nbsp;&nbsp; must follow immediately after its start-tag.</pre>
+</blockquote>
+whereas the non-validating mode
+<blockquote>
+<pre>fxp -nv exa-1.xml</pre>
+</blockquote>
+does not find any errors. Note that the error at <tt>[ext.elem:1.15]</tt>
+is a well-formedness error but is not reported since the external entity
+reference <tt>&amp;ext;</tt> in not included. But if we make the parser
+include external parsed entities:
+<blockquote>
+<pre>fxp -nv --include-external exa-1.xml</pre>
+</blockquote>
+then the error is reported:
+<blockquote>
+<pre>[ext.elem:1.15] Error: Element 'a' was ended by an end-tag for 'b'.</pre>
+</blockquote>
+
+<h4>
+<a NAME="EXA-COMP"></a>Compatibility Modes</h4>
+Some features in XML have only been included for compatibility with SGML.
+These include:
+<ul>
+<li>
+the string (<tt>]]></tt>) may not appear literally in content;</li>
+
+<li>
+a comment may not contain a double-hyphen (<tt>--</tt>);</li>
+
+<li>
+content models must be unambiguous.</li>
+</ul>
+By default <i>fxp</i> checks for compatibility and prints errors in case
+it is not obeyed. This can be changed with the <tt>--compatibility=no</tt>
+or, for short, <tt>-nc</tt> option.
+<p>In non-compatibility mode, however, the parser must handle ambiguous
+content models. This implies generation of a deterministic finite state
+machine (DFA), which may in the worst case have size exponential in the
+size of the content model. In order to avoid too high space usage, <i>fxp</i>
+imposes a limit on the size of the generated DFA. If this limit is exceeded,
+a warning is printed and the content model is approximated by <tt>(e<sub>1</sub>|...|e<sub>n</sub>)*</tt>,
+where <tt>e<sub>1</sub></tt>, ..., <tt>e<sub>n</sub></tt> are all element
+types occurring in the original model. The new content model is less restrictive
+but allows for a small DFA. The limit defaults to 256 and can be set by
+the <tt>--dfa-max-size</tt> option, and the warning can be suppressed with
+the <tt>--dfa-warn-size=no</tt> option.
+<p>For instance, consider the document <tt><a href="Examples/exa-2.xml">exa-2.xml</a></tt>.
+Note that the content model for element <tt>a</tt> is ambiguous, and its
+DFA needs at least 257 states. Running <i>fxp</i> in compatibility mode
+produces the following errors:
+<blockquote>
+<pre>[exa-2.xml:4.65] Error: Content model is ambiguous: conflict between the 1st and
+&nbsp;&nbsp;&nbsp; the 2nd occurrence of element 'b'. Using an approximation instead.
+[exa-2.xml:10.26] Error: '--' is not allowed in a comment.
+[exa-2.xml:13.26] Error: Character '>' must be escaped for compatibility.</pre>
+</blockquote>
+Note that the empty element tag for <tt>a</tt> is not an error since <tt>a</tt>'s
+content model was approximated. Running in non-compatibility mode:
+<blockquote>
+<pre>fxp -nc exa-1.xml</pre>
+</blockquote>
+suppressed these errors, but reports the following instead:
+<blockquote>
+<pre>[exa-2.xml:4.65] Warning: The finite state machine for the content model of&nbsp;
+&nbsp;&nbsp;&nbsp; element type 'a' would have more than the maximal allowed number of 256&nbsp;
+&nbsp;&nbsp;&nbsp; states. Using an approximation instead.</pre>
+</blockquote>
+This warning can be suppressed by invoking <i>fxp</i> like this:
+<blockquote>
+<pre>fxp -nc --dfa-warn-size=no exa-1.xml</pre>
+</blockquote>
+But still the invalidity of the empty-element tag for <tt>a</tt> is not
+detected. In order to achieve this, we can raise the limit for the DFA's
+size:
+<blockquote>
+<pre>fxp -nc --dfa-max-size=257 exa-1.xml</pre>
+</blockquote>
+Now element <tt>a</tt>'s content can be validated and the error is reported:
+<blockquote>
+<pre>[exa-2.xml:12.0] Error: Empty-element tag for element type 'a' whose content&nbsp;
+&nbsp;&nbsp;&nbsp; model requires non-empty content.</pre>
+</blockquote>
+
+<h4>
+<a NAME="EXA-INTER"></a>Interoperability Modes</h4>
+XML also includes some interoperability recommendations in to allow existing
+SGML software to process XML documents. These recommendations are non-binding
+and therefore not checked for by default. The <tt>--interoperability</tt>
+or, for short, <tt>-i</tt> option makes <i>fxp</i> run in interoperability-mode,
+which enables checking for these features. Some of these features can additionally
+be controlled by individual options. The following table lists the features
+supported by <i>fxp</i>, together with the option (if any) that enables
+or disables them, and whether they are enabled by default if <tt>--interoperability</tt>
+is supplied:
+<table WIDTH="90%" >
+<tr>
+<td>Controlling option</td>
+
+<td ALIGN=CENTER>&nbsp; Default&nbsp;</td>
+
+<td>Interoperability Feature</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td>(none)&nbsp;</td>
+
+<td ALIGN=CENTER>yes</td>
+
+<td>The empty element tag must be used and may only be used for elements
+declared <tt>EMPTY</tt>.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>--warn-mult-decl=attlist</tt></td>
+
+<td ALIGN=CENTER>no</td>
+
+<td>There should be at most one attribute list declaration for each element
+type.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>--warn-mult-decl=att</tt></td>
+
+<td ALIGN=CENTER>no</td>
+
+<td>No attribute should be declared twice for the same element type.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td>(none)&nbsp;</td>
+
+<td ALIGN=CENTER>yes</td>
+
+<td>The same name token should not occur more than once in the enumerated
+attribute types of a single element type.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>--warn-predefined=no</tt></td>
+
+<td ALIGN=CENTER>yes</td>
+
+<td>Valid documents should declare the entities <tt>amp</tt>, <tt>lt</tt>,
+<tt>gt</tt>, <tt>apos</tt> and <tt>quot</tt>.&nbsp;</td>
+</tr>
+</table>
+Note that all arguments to the <tt>--warn-mult-decl</tt> option must be
+specified in a list; see a detailed description <a href="#MULT-DECL">here</a>.
+<p>As example consider the document <tt><a href="Examples/exa-3.xml">exa-3.xml</a></tt>.
+Running <tt>fxp -i exa-3.xml</tt> reports the following:
+<blockquote>
+<pre>[exa-3.xml:10.2] Warning: The following name tokens occur more than once in the&nbsp;
+&nbsp;&nbsp;&nbsp; enumerated attribute types of element 'a': 'yes', 'no'.
+[exa-3.xml:10.2] Warning: The predefined entities 'lt', 'gt', 'apos', 'quot' and
+&nbsp;&nbsp;&nbsp; 'amp' should have been declared.
+[exa-3.xml:13.4] Error: An empty-element tag must be used for element type 'a'&nbsp;
+&nbsp;&nbsp;&nbsp; with EMPTY declared content.
+[exa-3.xml:15.0] Error: Empty-element tag for element 'b' with non-EMPTY&nbsp;
+&nbsp;&nbsp;&nbsp; declared content.</pre>
+</blockquote>
+Now we add some options:
+<blockquote>
+<pre>fxp -i --warn-mult-decl=att,attlist --warn-predefined=no exa-3.xml</pre>
+</blockquote>
+The result is that the predefined entities are not checked, but multiple
+declarations are detected now:
+<blockquote>
+<pre>[exa-3.xml:9.12] Warning: Repeated attribute-list declaration for element type&nbsp;
+&nbsp;&nbsp;&nbsp; 'a'.
+[exa-3.xml:9.28] Warning: Repeated definition of attribute 'x' for element type&nbsp;
+&nbsp;&nbsp;&nbsp; 'a'.
+[exa-3.xml:10.2] Warning: The following name tokens occur more than once in the&nbsp;
+&nbsp;&nbsp;&nbsp; enumerated attribute types of element 'a': 'yes', 'no'.
+[exa-3.xml:13.4] Error: An empty-element tag must be used for element type 'a'&nbsp;
+&nbsp;&nbsp;&nbsp; with EMPTY declared content.
+[exa-3.xml:15.0] Error: Empty-element tag for element 'b' with non-EMPTY&nbsp;
+&nbsp;&nbsp;&nbsp; declared content.</pre>
+</blockquote>
+
+<h4>
+<a NAME="EXA-OTHER"></a>Other Errors and Warnings</h4>
+The following table lists some features from the XML recommendation which
+can be enabled or disabled by command line options:
+<table WIDTH="90%" >
+<tr>
+<td>Controlling option</td>
+
+<td ALIGN=CENTER>&nbsp; Default&nbsp;</td>
+
+<td>Feature</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>--warn-att-elem</tt></td>
+
+<td ALIGN=CENTER>no</td>
+
+<td>There should be attribute list declarations for declared element types
+only.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>--check-predefined=no</tt></td>
+
+<td ALIGN=CENTER>yes</td>
+
+<td>If the predefined entities are declared, this must be according to
+section "4.6 Predefined Entities".&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>--check-lang-id</tt></td>
+
+<td ALIGN=CENTER>no</td>
+
+<td>The values of the attribute <tt>xml:lang</tt> must be language identifiers
+as defined by IETF RFC 1766, "Tags for the Identification of Languages".&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>--check-iso639</tt></td>
+
+<td ALIGN=CENTER>no</td>
+
+<td>An ISO-639 Code in a value of the attribute <tt>xml:lang</tt> must
+be a two-letter language code as defined by ISO 639, "Codes for the representation
+of names of languages"&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>--warn-uri=no</tt></td>
+
+<td ALIGN=CENTER>yes</td>
+
+<td>System identifiers are URI's and may only contain ASCII characters,
+according to IETF RFC 2396, "Uniform Resource Identifiers (URI): Generic
+Syntax"&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>--check-xml-version=no</tt></td>
+
+<td ALIGN=CENTER>yes</td>
+
+<td>Processors may signal an error if they receive documents labeled with
+versions they do not support.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>--warn-xml-decl</tt></td>
+
+<td ALIGN=CENTER>no</td>
+
+<td>XML documents should, begin with an XML declaration which specifies
+the version of XML being used.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>--warn-mult-decl=ent</tt></td>
+
+<td ALIGN=CENTER>no</td>
+
+<td>An XML processor may issue a warning if entities are declared multiple
+times.&nbsp;</td>
+</tr>
+
+<tr VALIGN=TOP>
+<td><tt>--warn-mult-decl=not</tt></td>
+
+<td ALIGN=CENTER>no</td>
+
+<td>Ditto for notations. This is not mentioned in the XML recommendation
+but sensible.&nbsp;</td>
+</tr>
+</table>
+Note that all arguments to the <tt>--warn-mult-decl</tt> option must be
+specified in a list; see a detailed description <a href="#MULT-DECL">here</a>.
+<p>For instance, consider the example document <tt><a href="Examples/exa-4.xml">exa-4.xml</a></tt>.
+Running <i>fxp</i> without options produces the following:
+<blockquote>
+<pre>[exa-4.xml:1.20] Error: XML version '1.1' is not supported.
+[exa-4.xml:12.21] Error: General entity 'amp' must be declared as internal&nbsp;
+&nbsp;&nbsp;&nbsp; entity with replacement text '&amp;'.</pre>
+</blockquote>
+We can suppress these messages while making the parser check for the other
+features listed above by typing:
+<blockquote>
+<pre>fxp --warn-att-elem --check-predefined=no --check-lang-id --check-iso639&nbsp;
+&nbsp;&nbsp;&nbsp; --check-xml-version=no --warn-mult-decl=ent,not exa-4.xml</pre>
+</blockquote>
+The result is:
+<blockquote>
+<pre>[exa-4.xml:9.32] Error: 'i-' is not a language identifier.
+[exa-4.xml:10.12] Warning: Attribute-list declaration for undeclared element&nbsp;
+&nbsp;&nbsp;&nbsp; type 'c'.
+[exa-4.xml:13.25] Warning: Repeated declaration for general entity 'amp'.
+[exa-4.xml:16.45] Warning: Repeated declaration for notation 'text'.
+[exa-4.xml:20.17] Error: 'yy' is not a language identifier.</pre>
+</blockquote>
+<img SRC="shadow.jpg" ALT="----------------" >
+<h2>
+<a NAME="OPT"></a>Summary of Command Line Options</h2>
+Each option can be one of:
+<ul>
+<li>
+A file name specifying the input document. Only one input document may
+be specified.</li>
+
+<li>
+A long option of the form <tt>--key[=arg]</tt></li>
+
+<li>
+A short option of the form <tt>-k</tt>, where <tt>k</tt> consists of single
+character. If <tt>k</tt> consists of more than one character, each character
+is assumed to be a short option itself (e.g., <tt>-vic</tt> equals <tt>-v
+-i -c</tt>).</li>
+
+<li>
+A short option with argument of the form <tt>-k arg</tt>, where <tt>k</tt>
+consists of a single character.</li>
+
+<li>
+A negative short option of the form <tt>-nk</tt>, where <tt>k</tt> consists
+of single character. If <tt>k</tt> consists of more than one character,
+each character is assumed to be a negative short option itself (e.g., <tt>-nvic</tt>
+equals <tt>-nv -ni -nc</tt>). If <tt>k</tt> is empty, then we have the
+(non-negative) short option <tt>-n</tt>.</li>
+
+<li>
+The string <tt>--</tt>. This option is ignored, except that all remaining
+options are interpreted as file names, whether they start with <tt>-</tt>
+or not.</li>
+</ul>
+The following options are available (see also the <a href="features.html#CAT-OPT">catalog</a>
+options):
+<dl>
+<dt>
+<tt>-s</tt></dt>
+
+<dt>
+<tt>--silent</tt></dt>
+
+<dd>
+Do not print any errors or warnings.</dd>
+
+<dt>
+<tt>--few-errors=[(yes|no)]</tt></dt>
+
+<dd>
+If <tt>yes</tt>, the parser tries to avoid printing errors caused by something
+that already caused an error earlier. E.g., an attribute specification
+for an attribute not declared for some element will cause an error only
+at the first instance of that element with the attribute. If no argument
+is given, <tt>yes</tt> is assumed. Default is <tt>yes</tt>.</dd>
+
+<dt>
+<tt>-e fname</tt></dt>
+
+<dt>
+<tt>--error-output=fname</tt></dt>
+
+<dd>
+Write all errors and warnings to the file named <tt>fname</tt>. If <tt>fname</tt>
+is <tt>-</tt>, standard error is used. Default is <tt>-</tt>.</dd>
+
+<dt>
+<tt>--validate[=(yes|no)]</tt></dt>
+
+<dd>
+Turns on or off validation. If no argument is given, <tt>yes</tt> is assumed.
+Default is <tt>yes</tt>.</dd>
+
+<dt>
+<tt>-v</tt></dt>
+
+<dd>
+Same as <tt>--validate=yes</tt>.</dd>
+
+<dt>
+<tt>-nv</tt></dt>
+
+<dd>
+Same as <tt>--validate=no</tt>.</dd>
+
+<dt>
+<tt>--compatibility[=(yes|no)]</tt></dt>
+
+<dd>
+If <tt>yes</tt>, the parser checks for features that were included into
+XML solely for compatibility with SGML. If no argument is given, <tt>yes</tt>
+is assumed. Default is <tt>yes</tt>.</dd>
+
+<dt>
+<tt>--compat[=(yes|no)]</tt></dt>
+
+<dd>
+Same as <tt>--compatibility</tt>.</dd>
+
+<dt>
+<tt>-c</tt></dt>
+
+<dd>
+Same as <tt>--compatibility=yes</tt>.</dd>
+
+<dt>
+<tt>-nc</tt></dt>
+
+<dd>
+Same as <tt>--compatibility=no</tt>.</dd>
+
+<dt>
+<tt>--interoperability[=(yes|no)]</tt></dt>
+
+<dd>
+If <tt>yes</tt>, the parser checks whether the (non-binding) recommendations
+XML makes for enhancing interoperability with existing SGML software are
+followed. If no argument is given, <tt>yes</tt> is assumed. Default is
+<tt>no</tt>.</dd>
+
+<dt>
+<tt>--interop[=(yes|no)]</tt></dt>
+
+<dd>
+Same as <tt>--interoperability</tt>.</dd>
+
+<dt>
+<tt>-i</tt></dt>
+
+<dd>
+Same as <tt>--interoperability=yes</tt>.</dd>
+
+<dt>
+<tt>-ni</tt></dt>
+
+<dd>
+Same as <tt>--interoperability=no</tt>.</dd>
+
+<br>&nbsp;
+<p>&nbsp;</dl>
+
+<dl>
+<dt>
+<tt>--check-reserved[=(yes|no)]</tt></dt>
+
+<dd>
+If <tt>yes</tt>, the parser checks whether element names, attribute names
+and PI targets are reserved for standardization and thus invalid. If no
+argument is given, <tt>yes</tt> is assumed. Default is <tt>no</tt>.</dd>
+
+<dt>
+<tt>--check-predefined[=(yes|no)]</tt></dt>
+
+<dd>
+If <tt>yes</tt>, the parser checks whether declarations for the predefined
+entities (<tt>amp</tt>, <tt>lt</tt>, <tt>gt</tt>, <tt>apos</tt> and <tt>quot</tt>)
+are in accordance to section 4.6 in the XML recommendation. If no argument
+is given, <tt>yes</tt> is assumed. Default is <tt>yes</tt>.</dd>
+
+<dt>
+<tt>--check-predef[=(yes|no)]</tt></dt>
+
+<dd>
+Same as <tt>--check-predefined</tt>.</dd>
+
+<dt>
+<tt>--check-lang-id[=(yes|no)]</tt></dt>
+
+<dd>
+If <tt>yes</tt>, the parser checks whether values of the 'xml:lang' attribute
+are language identifiers as defined in RFC 1776. If no argument is given,
+<tt>yes</tt> is assumed. Default is <tt>no</tt>.</dd>
+
+<dt>
+<tt>--check-iso639[=(yes|no)]</tt></dt>
+
+<dd>
+If <tt>yes</tt>, the parser checks whether an ISO language code in a language
+identifier is in accordance to ISO 639. Has no effect unless <tt>--check-lang-id=yes</tt>
+was specified. If no argument is given, <tt>yes</tt> is assumed. Default
+is <tt>no</tt>.</dd>
+
+<dt>
+<tt>--check-xml-version[=(yes|no)]</tt></dt>
+
+<dd>
+If <tt>yes</tt>, the parser checks whether the version number in a XML
+or text declaration is supported. If no argument is given, <tt>yes</tt>
+is assumed. Default is <tt>yes</tt>.</dd>
+
+<dt>
+<tt>--warn-uri[=(yes|no)]</tt></dt>
+
+<dd>
+If <tt>yes</tt>, the parser prints a warning for each non-ASCII character
+occurring in a system literal (URI). If no argument is given, <tt>yes</tt>
+is assumed. Default is <tt>yes</tt>.</dd>
+
+<dt>
+<tt>--warn-xml-decl[=(yes|no)]</tt></dt>
+
+<dd>
+Turns on or off a warning if there is no XML declaration. If no argument
+is given, <tt>yes</tt> is assumed. Default is <tt>no</tt>.</dd>
+
+<dt>
+<tt>--warn-att-elem[=(yes|no)]</tt></dt>
+
+<dd>
+Turns on or off warnings about attribute list declarations for undeclared
+elements. If no argument is given, <tt>yes</tt> is assumed. Default is
+<tt>no</tt>.</dd>
+
+<dt>
+<tt>--warn-predefined[=(yes|no)]</tt></dt>
+
+<dd>
+Turns on or off a warning if at least one of the predefined entities (<tt>amp</tt>,
+<tt>lt</tt>, <tt>gt</tt>, <tt>apos</tt> and <tt>quot</tt>) are not declared.
+Has no effect in non-validating mode or if <tt>--interoperability=yes</tt>
+was not specified. If no argument is given, <tt>yes</tt> is assumed. Default
+is <tt>no</tt>.</dd>
+
+<dt>
+<a NAME="MULT-DECL"></a><tt>--warn-mult-decl[=arg]</tt></dt>
+
+<dd>
+Turns on or off a warning if something is declared multiple times. <tt>arg</tt>
+specifies which declarations this applies to, and must be one of the following:</dd>
+
+<ul>
+<li>
+A comma-separated list <tt>key<sub>1</sub>[,key<sub>2</sub> ...]</tt>,
+where each key is one out of:</li>
+
+<ul>
+<li>
+<tt>att</tt> for multiple definitions of an attribute for the same element;</li>
+
+<li>
+<tt>attlist</tt> for multiple attribute list declaration for an element;</li>
+
+<li>
+<tt>ent</tt> for multiple declarations of an entity;</li>
+
+<li>
+<tt>not</tt> for multiple declarations of a notation.</li>
+</ul>
+
+<li>
+<tt>all</tt> for all of the keys above;</li>
+
+<li>
+<tt>none</tt> for all of the keys above.</li>
+</ul>
+<tt>att</tt> and <tt>attlist</tt> have no effect unless <tt>--interoperability=yes</tt>
+was specified. If no argument is given, <tt>all</tt> is assumed. Default
+is <tt>none</tt>.
+<dt>
+<tt>--warn[=(yes|no)]</tt></dt>
+
+<dd>
+If <tt>yes</tt> or without argument, equivalent to <tt>--warn-xml-decl
+--warn-att-elem --warn-predefined --warn-mult-decl=all</tt>.</dd>
+
+<br>If <tt>no</tt>, equivalent to <tt>--warn-xml-decl=no --warn-att-elem=no
+--warn-predefined=no --warn-mult-decl=none</tt>.
+<dt>
+<tt>--include-external[=(yes|no)]</tt></dt>
+
+<dd>
+Specifies whether external parsed entity references are included in content
+or not. Has no effect in validating mode (then all references are included).
+If no argument is given, <tt>yes</tt> is assumed. Default is <tt>no</tt>.</dd>
+
+<dt>
+<tt>--include-ext[=(yes|no)]</tt></dt>
+
+<dd>
+Same as <tt>--include-external</tt>.</dd>
+
+<dt>
+<tt>--dfa-initial-size=n</tt></dt>
+
+<dd>
+The transition table of a finite state machine grows dynamically during
+its creation, i.e., if the table's size is exceeded, it is recreated with
+double size. This option sets the initial size of the transition table
+to the next power of 2 larger or equal to <tt>n</tt>. Default is <tt>16</tt>.</dd>
+
+<dt>
+<tt>--dfa-initial-width=n</tt></dt>
+
+<dd>
+Same as <tt>--dfa-initial-size=2<sup>n</sup></tt>.</dd>
+
+<dt>
+<tt>--dfa-max-size=n</tt></dt>
+
+<dd>
+For ambiguous content models the parser generates a deterministic finite
+state machine (DFA), which may in the worst case have size exponential
+in the size of the content model. This option specifies a threshold for
+the number of admissible states of the DFA. If it is exceeded, the content
+model is approximated by the content model <tt>(e<sub>1</sub>|...|e<sub>n</sub>)*</tt>,
+where <tt>e<sub>1</sub></tt>, ..., <tt>e<sub>n</sub></tt> are all element
+types occurring in the original model. Default is <tt>256</tt>.</dd>
+
+<dt>
+<tt>--dfa-warn-size[=(yes|no)]</tt></dt>
+
+<dd>
+Turns on or off a warning if the maximal number of states specified by
+<tt>--dfa-max-size</tt> is exceeded by the DFA construction for a content
+model. If no argument is given, <tt>yes</tt> is assumed. Default is <tt>yes</tt>.</dd>
+
+<dt>
+<tt>-?</tt></dt>
+
+<dt>
+<tt>--help</tt></dt>
+
+<dd>
+Print a summary of the command line options and exit.</dd>
+</dl>
+<img SRC="shadow.jpg" ALT="----------------" >
+<address>
+fxp's feedback address <a href="mailto:fxp@PSI.Uni-Trier.DE">fxp@PSI.Uni-Trier.DE</a></address>
+
+</body>
+</html>

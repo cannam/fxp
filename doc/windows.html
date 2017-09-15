@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Installation steps for Windows</title>
+  </head>
+
+  <body>
+    <h1>Installation steps for Windows</h1>
+
+    This is a contribution by Kevin S. Millikin:
+
+<ol>
+  <li>
+      Download the fxp sources.  Save the file where you would like the fxp
+      source directory to reside.  For instance, I just installed mine in
+      <code>/cygdrive/d/xml</code>.
+  </li>
+  <li>
+      In the Cygwin bash shell, cd to the directory containing the source
+      tarball, and unzip and detar it.  Then, cd to the directory containing
+      the fxp sources
+<pre>
+cd /cygdrive/d/xml
+tar -zxvf fxp.tar.gz
+cd fxp-1.4.6
+</pre>
+  </li>
+  <li>Read the <tt>COPYRIGHT</tt>.</li>
+
+  <li>
+      Edit the <code>Makefile</code> to reflect the situation at your site.
+      Change the line specifying where to install the fxp binaries and
+      libraries from
+<pre>
+<font color="red">PREFIX     = /home/berlea/xmlsoft</font>
+</pre>
+      to something like
+<pre>
+<font color="blue">PREFIX     = /cygdrive/d/xml</font>
+</pre>
+      Change the line specifying the path to the SML/NJ executable to the
+      correct path to the executable, from
+<pre>
+<font color="red">SML_BINDIR = /usr/share/smlnj/bin</font>
+</pre>
+      to something like
+<pre>
+<font color="blue">SML_BINDIR = /cygdrive/d/smlnj-110.43/bin</font>
+</pre>
+      Finally, the Cygwin version of <code>mkdirhier</code> is buggy.  Replace
+      the line
+<pre>
+<font color="red">MKDIRHIER = mkdirhier</font>
+</pre>
+      with
+<pre>
+<font color="blue">MKDIRHIER = mkdir -p</font>
+      </pre>
+  </li>
+  <li>
+      Unix versions of SML/NJ come equipped with a shell script called
+      <code>.arch-n-opsys</code> that reports the processor architecture and
+      operating system.  The Win32 versions do not include this shell script.
+      <code>fxp</code>'s build process relies on the presence of this script.
+      The easiest thing to do is place a script in the same directory as your
+      <code>sml</code> binary.
+<pre>
+#!/bin/sh
+#
+# .arch-n-opsys  -- get architecture and system info
+# This file is hacked to run with the Windows version
+
+echo "ARCH=x86; OPSYS=win32; HEAP_SUFFIX=x86-win32"
+</pre>
+      Call this file <code>.arch-n-opsys</code>.  Notice that it's really a
+      big cheat.  Make sure that it is executable
+<pre>
+chmod a+x .arch-n-opsys
+</pre>
+  </li>
+  <li>
+      Now, you can make all
+<pre>
+make
+</pre>
+  </li>
+  <li>
+      If that succeeded, you can install the binaries and libraries
+<pre>
+make install
+</pre>
+  </li>
+</ol>
+
+    <hr>
+  </body>
+</html>

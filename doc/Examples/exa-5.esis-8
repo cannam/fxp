@@ -1,0 +1,33 @@
+
+(exa
+-\n
+Aref CDATA www.fxp.org
+Anum IMPLIED
+s/usr/bin/nroff
+Nman
+s/usr/man/man1/fxp.1
+f<OSFILE>/usr/man/man1/fxp.1
+Efxp.manpage NDATA man
+Aent ENTITY fxp.manpage
+pBSD//A Program for viewing text//EN
+s/bin/cat
+Ntext
+Anot NOTATION text
+Aid TOKEN first-a
+Abold TOKEN no
+(a
+-\nThere is a comment  in this line.\nThis line has a character reference and \nthis one has a "quoted general entity reference".  \n\nthis is a cdata section!\n
+?see this pi?
+-\n
+)a
+-\n
+Aref IMPLIED
+Anum IMPLIED
+Aent IMPLIED
+Anot NOTATION man
+Aid IMPLIED
+Abold TOKEN no
+(a
+-\nEr wohnt in Köln, in der Müllerstraße 13.\n
+)a
+)exa
