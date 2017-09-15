@@ -11,5 +11,6 @@ in
     canonOutput.sml
     canonHooks.sml
     canon.sml
+    ../../Util/main.sml
   end
 end

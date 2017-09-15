@@ -2,6 +2,7 @@ Group is
     nullHooks.sml
     nullOptions.sml
     null.sml
+    ../../Util/main.sml
     nullHard.sml
     ../../fxlib.cm
     $/basis.cm

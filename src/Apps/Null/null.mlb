@@ -10,5 +10,6 @@ in
     nullHooks.sml
     nullHard.sml
     null.sml
+    ../../Util/main.sml
   end
 end

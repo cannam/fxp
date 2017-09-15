@@ -78,4 +78,4 @@ structure Canon =
 	 end
    end
 
-val _ = Canon.canon(CommandLine.name (), CommandLine.arguments ())
+fun main () = Canon.canon(CommandLine.name (), CommandLine.arguments ())

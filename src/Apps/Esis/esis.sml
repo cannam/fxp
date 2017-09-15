@@ -85,4 +85,4 @@ structure Esis =
 	 end
    end
 
-val _ = Esis.esis(CommandLine.name (), CommandLine.arguments ())
+fun main () = Esis.esis(CommandLine.name (), CommandLine.arguments ())

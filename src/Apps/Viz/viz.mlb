@@ -9,5 +9,6 @@ in
     vizOptions.sml
     vizHooks.sml
     viz.sml
+    ../../Util/main.sml
   end
 end

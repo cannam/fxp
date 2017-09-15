@@ -11,5 +11,6 @@ in
     esisOutput.sml
     esisHooks.sml
     esis.sml
+    ../../Util/main.sml
   end
 end

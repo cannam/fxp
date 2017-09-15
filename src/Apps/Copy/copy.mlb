@@ -11,5 +11,6 @@ in
     copyOutput.sml
     copyHooks.sml
     copy.sml
+    ../../Util/main.sml
   end
 end

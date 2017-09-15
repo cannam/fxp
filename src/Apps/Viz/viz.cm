@@ -1,6 +1,7 @@
 Group is
     vizOptions.sml
     viz.sml
+    ../../Util/main.sml
     vizHooks.sml
     ../../fxlib.cm
     $/basis.cm

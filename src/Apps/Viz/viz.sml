@@ -84,4 +84,4 @@ structure Viz =
 	 end
    end
 
-val _ = Viz.viz(CommandLine.name (), CommandLine.arguments ())
+fun main () = Viz.viz(CommandLine.name (), CommandLine.arguments ())
