@@ -4,7 +4,7 @@ ann
   "sequenceUnit true"
 in
   local
-    $(MLTON_ROOT)/basis/basis.mlb
+    $(SML_LIB)/basis/basis.mlb
   in
   config.sml
   Util/utilCompare.sml
