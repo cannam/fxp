@@ -4,6 +4,5 @@ Group is
     copyOutput.sml
     copyHooks.sml
     copy.sml
-    ../../Util/main.sml
     ../../fxlib.cm
     $/basis.cm

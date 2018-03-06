@@ -4,6 +4,5 @@ Group is
     canonOutput.sml
     canonHooks.sml
     canon.sml
-    ../../Util/main.sml
     ../../fxlib.cm
     $/basis.cm
