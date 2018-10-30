@@ -55,7 +55,8 @@ The MLB file `src/fxlib.mlb` lists the library sources, and each of
 the command-line utilities has its own `.mlb` file. So to build, for
 example, the `canon` utility:
 
-```$ cd src/Apps/Canon
+```
+$ cd src/Apps/Canon
 $ mlton canon.mlb
 ```
 
@@ -74,7 +75,8 @@ For each of the MLB build files, a corresponding file `poly-*.ML` is
 provided that pulls in the same sources via `use` declarations. So to
 build, for example, the `canon` utility:
 
-```$ cd src/Apps/Canon
+```
+$ cd src/Apps/Canon
 $ polyc -o canon poly-canon.ML
 ```
 
