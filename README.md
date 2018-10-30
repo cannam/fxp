@@ -1,54 +1,98 @@
+
 fxp - The Functional XML Parser
-Version 2.0, 25.06.2004
+===============================
 
-by 
-   Andreas Neumann, University of Trier
-     neumann (AT) psi.uni-trier.de
-   Alexandru Berlea, TU Munich
-     berlea (AT) in.tum.de
+#### A validating XML parser and manipulation library written in Standard ML
 
-What is fxp?
-------------
-fxp is a validating XML parser, written completely in the functional 
-programming language SML. It has a programming interface
-allowing for production of XML applications based on fxp. It comes with 
-some example applications: 
+fxp is a validating XML parser, written completely in the functional
+programming language SML. It has a programming interface allowing for
+production of XML applications based on fxp.
+
+fxp was written by Andreas Neumann, University of Trier (neumann (AT)
+psi.uni-trier.de) and Alexandru Berlea, TU Munich (berlea (AT)
+in.tum.de). This repository also contains patches collected by Timothy
+Bourke (see http://www.tbrk.org/software/sml-fxp.html) and a few other
+fixes to improve compatibility with more recent compiler systems.
+
+
+Example applications
+--------------------
+
+The following example applications are included:
   
-  fxp      The pure parser. It parses a document and finds well-formedness 
-           errors, validity errors and other problems;
+ * `fxp` - The pure parser. It parses a document and finds
+   well-formedness errors, validity errors and other problems;
 
-  fxcanon  Produces an equivalent canonical XML document. Canonical XML was
-           invented by James Clark for testing XML parsers. It contains only
-           the information a processor is required to pass to the application; 
+ * `fxcanon` - Produces an equivalent canonical XML
+   document. Canonical XML was invented by James Clark for testing XML
+   parsers. It contains only the information a processor is required
+   to pass to the application;
 
-  fxcopy   Reproduces the document parsed by fxp. The copy can be generated
-           in a different encoding than the input, and can be normalized in 
-           different ways concerning, e.g., expansion of entity references; 
+ * `fxcopy` - Reproduces the document parsed by fxp. The copy can be
+   generated in a different encoding than the input, and can be
+   normalized in different ways concerning, e.g., expansion of entity
+   references;
 
-  fxesis   Produces an output similar to nsgmls's ESIS (Element Structure 
-           Information Set) output;
+ * `fxesis` - Produces an output similar to nsgmls's ESIS (Element
+   Structure Information Set) output;
 
-  fxviz    An XML tree visualizer. It produces a graph description suitable as
-           input to Georg Sander's vcg. 
-
-Homepage
---------
-    http://www.informatik.uni-trier.de/~berlea/Fxp
+ * `fxviz` - An XML tree visualizer. It produces a graph description
+   suitable as input to Georg Sander's vcg.
 
 
-Installation
-------------
+Programming Interface
+---------------------
 
-In order to install fxp, you need an SML compiler. It has been tested with
-version 110.0.7 of SML of New Jersey, but it might also run with other
-versions. The compiler must have the compilation manager (CM) built in, which
-is the default when installing SML-NJ. We successfully compiled fxp on
-Linux. For other unices we expect no problems. An installation using the
-Windows version of SML-NJ is documented on fxp's homepage.
+fxp's API is described in `doc/api.ps`.
 
 
-These are the steps for installing fxp under Unix: 
+Compiling fxp
+-------------
 
+#### With MLton
+
+The MLB file `src/fxlib.mlb` lists the library sources, and each of
+the command-line utilities has its own `.mlb` file. So to build, for
+example, the `canon` utility:
+
+```$ cd src/Apps/Canon
+$ mlton canon.mlb
+```
+
+
+#### With SML/NJ
+
+Compilation Manager (CM) files are provided, as well as a `Makefile`
+that invokes them. The `Makefile` is retained from the original fxp
+sources and may not be current. See the section "Historical build
+instructions" below for more details.
+
+
+#### With Poly/ML
+
+For each of the MLB build files, a corresponding file `poly-*.ML` is
+provided that pulls in the same sources via `use` declarations. So to
+build, for example, the `canon` utility:
+
+```$ cd src/Apps/Canon
+$ polyc -o canon poly-canon.ML
+```
+
+
+Copyright
+---------
+
+Copyright 1999-2004 Andreas Neumann and Alexandru Berlea. See the file
+`COPYRIGHT` for more information about licensing.
+
+
+Historical build instructions
+-----------------------------
+
+These are the steps described in the original fxp distribution for
+installing fxp under Unix:
+
+```
     1. Download the latest version of fxp; 
     2. Unpack the sources, and change to the fxp directory, e.g.: 
 
@@ -115,19 +159,4 @@ These are the steps for installing fxp under Unix:
     7. Install fxp by typing make install. 
     8. If you want to use fxviz, you should also install vcg
        (ftp://ftp.cs.uni-sb.de/pub/graphics/vcg/).
-
-If you experience problems installing fxp, send me mail at berlea (AT)
-in.tum.de Check out for new versions at
-http://www.informatik.tu-muenchen.de/~berlea/Fxp.
-
-Running the Parser
-------------------
-Sample applications like fxp (a validating XML parser), fxcanon, fxcopy,
-fxesis, and fxviz are described on fxp's homepage.
-
-Programming Interface
----------------------
-fxt's API is described in api.ps.
-
-
-Alexandru Berlea
+```
