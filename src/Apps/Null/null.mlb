@@ -1,6 +1,6 @@
 ann
-  "warnMatch true"
-  "sequenceUnit true"
+  "nonexhaustiveMatch warn"
+  "sequenceNonUnit warn"
 in
   local
     $(SML_LIB)/basis/basis.mlb
